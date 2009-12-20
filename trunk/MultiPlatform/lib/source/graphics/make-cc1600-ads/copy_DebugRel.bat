@@ -1,0 +1,1 @@
+copy grapgics_Data\DebugRel\grapgics.a ..\..\..\cc1600-ads
