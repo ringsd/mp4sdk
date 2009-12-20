@@ -1,0 +1,1 @@
+copy font_Data\DebugRel\font.a ..\..\..\cc1600-ads
