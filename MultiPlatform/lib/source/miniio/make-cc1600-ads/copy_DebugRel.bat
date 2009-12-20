@@ -1,0 +1,1 @@
+copy miniio_Data\DebugRel\miniio.a ..\..\..\cc1600-ads
