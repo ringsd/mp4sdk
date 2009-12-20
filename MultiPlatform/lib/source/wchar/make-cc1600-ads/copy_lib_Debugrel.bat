@@ -1,0 +1,1 @@
+copy wchar_Data\DebugRel\wchar.a ..\..\..\cc1600-ads
