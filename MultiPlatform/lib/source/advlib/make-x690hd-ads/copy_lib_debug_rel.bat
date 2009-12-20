@@ -1,0 +1,1 @@
+copy advlib_Data\DebugRel\advlib.a ..\..\..\cc1600-ads
