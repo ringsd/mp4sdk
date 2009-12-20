@@ -1,1 +1,0 @@
-copy zlib_Data\DebugRel\zlib.a ..\..\..\cc1600-ads
