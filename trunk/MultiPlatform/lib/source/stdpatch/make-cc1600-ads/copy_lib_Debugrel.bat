@@ -1,0 +1,1 @@
+copy stdpatch_Data\DebugRel\stdpatch.a ..\..\..\cc1600-ads
