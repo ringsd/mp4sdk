@@ -1,0 +1,1 @@
+copy multimedia_Data\DebugRel\multimedia.a ..\..\..\cc1600-ads
