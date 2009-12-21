@@ -69,7 +69,7 @@ int SDL_SemWaitTimeout(SDL_sem *sem, Uint32 timeout)
 {
 	sem->state=0;
 	sem->time=sys_ticks()+timeout;
-	while (!(volatile Uint8)sem->state && (volatile Uint8)sem->time < (sys_ticks()))
+	while (!(volatile Uint8)sem->state && (volatile Uint32)sem->time < (sys_ticks()))
 	{
       sys_delay(1);	
 	}
