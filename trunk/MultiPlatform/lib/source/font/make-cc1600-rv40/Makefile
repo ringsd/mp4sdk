@@ -95,8 +95,6 @@ DEFINE =	__MULTIPLATFORM__ \
 # Compiler and linker options
 # *************************************************************************
 
-INCLUDE   = $(addprefix -I,$(INCDIR))
-
 INCLUDE   = $(addprefix -I,$(INCDIR)) $(INCCMD)
 _DEFINE   = $(addprefix -D,$(DEFINE)) $(DEFCMD)
 

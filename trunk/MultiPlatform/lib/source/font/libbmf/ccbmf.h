@@ -17,13 +17,15 @@
 extern "C" {
 #endif
 
-typedef struct CCBMF CCBMF;
+#define CCBMF void
 
 CCBMF * ccbmf_open( const char * path );
 int ccbmf_read( CCBMF * bmf, int code, int size, int style, u8 * buf, int limit, XFONT_INFO * info );
 int ccbmf_getsize( CCBMF * bmf, int code, int size, int style, XFONT_INFO * info );
 const char * ccbmf_name( CCBMF * bmf );
 void ccbmf_close( CCBMF * bmf );
+
+#undef CCBMF
 
 #ifdef __cplusplus
 }

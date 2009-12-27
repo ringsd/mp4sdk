@@ -1,2 +1,2 @@
-copy font.h+font_nls.h ..\..\..\inc\platform_font.h /b
+copy font.h+font_nls.h+textout.h ..\..\..\inc\platform_font.h /b
 pause

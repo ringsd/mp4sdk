@@ -234,6 +234,78 @@ err:
 	*height = info.bitmap_height;
 }
 
+static void xfont_udraw_rgb555( 
+    XFONT * xfont, int code, int size, int style, u16 color, u16 bgcolor,
+    COLOR_MODE color_mode, XFONT_BLEND_MODE blending_mode,
+    int startx, int starty, int pitch,
+    void * buf, int * width, int * height, int limit
+)
+{
+	int x, y, endx, endy, line_add;
+	u16 * dst;
+	u8 * src;
+	XFONT_INFO info;
+	u32 fc_r = ( color & 0x7C00 );
+	u32 fc_g = ( color & 0x03E0 );
+	u32 fc_b = ( color & 0x001F );
+	u16 fc_a = ( color & 0x8000 );
+	u8 graybuf[ MAX_WIDTH*MAX_HEIGHT ];
+	
+	if( color_mode != LCD_A1R5G5B5 )
+		return;
+	
+	xfont_uread( xfont, code, size, style, graybuf, MAX_WIDTH*MAX_HEIGHT, &info );
+	endx = info.bitmap_width + startx;
+	endy = info.bitmap_height + starty;
+	src = graybuf;
+	dst = (u16*)buf + pitch * (starty-info.bitmap_top) + startx + info.bitmap_left;
+	line_add = pitch - (endx - startx);
+	
+	for( y = starty; y < endy; y ++ )
+	{
+		if( (u32)dst >= (u32)((u32)buf + limit) )
+			break;
+		for( x = startx; x < endx; x ++ )
+		{ 
+			int gray = *src;
+			int gray_bg = 256 - gray;
+			u32 data;
+			
+			switch( blending_mode )
+			{
+				case XFONT_BLEND_MODE_COVER:
+					data = bgcolor;
+					break;
+				case XFONT_BLEND_MODE_ALPHA:
+					data = *dst;
+					break;
+				default:
+					goto err;
+			}
+			
+			if( gray == 256 )
+			{
+				*dst = color;
+			}
+			else if( gray > 0 )
+			{
+				u32 r = (	( data ) * ( gray_bg ) + 
+								( fc_r * gray ) ) & 0x7C0000;
+				u32 g = (	( data & 0x07E0 ) * ( gray_bg ) + 
+								( fc_g * gray ) ) & 0x03E000;
+				u32 b = (	( data & 0x001F )	* ( gray_bg ) + 
+								( fc_b * gray ) ) & 0x001F00;
+				*dst = (u16)((r | g | b)>>8) | fc_a;
+			}
+			src++;
+			dst++;
+		}
+		dst += line_add;
+	}
+err:
+	*width = info.font_width;
+	*height = info.bitmap_height;
+}
 
 static void xfont_udraw_rgb888
                 (   XFONT * xfont, int code, int size, int style, u32 color, u32 bgcolor,
@@ -326,6 +398,14 @@ void xfont_udraw
             break;
         case LCD_R5G6B5:
             xfont_udraw_rgb565
+                (   xfont, code, size, style, (u16)color, (u16)bgcolor,
+                    color_mode, blending_mode,
+                    startx, starty, pitch,
+                    buf, width, height,limit
+                );
+            break;
+        case LCD_A1R5G5B5:
+            xfont_udraw_rgb555
                 (   xfont, code, size, style, (u16)color, (u16)bgcolor,
                     color_mode, blending_mode,
                     startx, starty, pitch,
