@@ -1,0 +1,1 @@
+del *.doc /s /a
