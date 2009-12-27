@@ -52,12 +52,16 @@ SRCDIR    = ../ \
 	../src/thread/mpf/ \
 	../src/timer/mpf/ \
 	../src/video/mpf/ \
+	../SDL_image/ \
+	../SDL_ttf/ \
             
 
 INCDIR    =	$(SRCDIR) \
 						../../../../inc \
 						../../../../inc/libjpeg \
 						../../../../inc/libpng \
+						../../../../inc/zlib \
+						../../../../inc/freetype \
 						../include \
 						
 					
