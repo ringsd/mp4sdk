@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\..\..\inc" /I "..\..\..\..\inc" /I "..\include" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
+# ADD CPP /nologo /MT /W3 /GX /O2 /I "..\..\..\inc" /I "..\..\..\..\inc" /I "..\include" /I "..\..\..\..\inc\libjpeg" /I "..\..\..\..\inc\libpng" /I "..\..\..\..\inc\freetype" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x804 /d "NDEBUG"
 # ADD RSC /l 0x804 /d "NDEBUG"
@@ -56,8 +56,8 @@ InputPath=.\Release\libSDL.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy         ..\libSDL.h         ..\..\..\..\inc\  
-	copy         $(InputPath)         ..\..\..\vc-x86\  
+	copy          ..\libSDL.h          ..\..\..\..\inc\  
+	copy          $(InputPath)          ..\..\..\vc-x86\  
 	
 # End Custom Build
 
@@ -74,7 +74,7 @@ SOURCE="$(InputPath)"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\inc" /I "..\include" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\inc" /I "..\include" /I "..\..\..\..\inc\libjpeg" /I "..\..\..\..\inc\libpng" /I "..\..\..\..\inc\freetype" /I "..\..\..\..\inc\zlib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x804 /d "_DEBUG"
 # ADD RSC /l 0x804 /d "_DEBUG"
@@ -89,8 +89,8 @@ InputPath=.\Debug\libSDL.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy         ..\libSDL.h         ..\..\..\..\inc\  
-	copy         $(InputPath)         ..\..\..\vc-x86\  
+	copy          ..\libSDL.h          ..\..\..\..\inc\  
+	copy          $(InputPath)          ..\..\..\vc-x86\  
 	
 # End Custom Build
 
@@ -103,6 +103,9 @@ SOURCE="$(InputPath)"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Group "base"
+
+# PROP Default_Filter ""
 # Begin Group "audio"
 
 # PROP Default_Filter ""
@@ -551,6 +554,87 @@ SOURCE=..\src\SDL_fatal.c
 
 SOURCE=..\src\SDL_fatal.h
 # End Source File
+# End Group
+# Begin Group "SDL_image"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_bmp.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_gif.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_ImageIO.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_jpg.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_lbm.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_pcx.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_png.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_pnm.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_tga.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_tif.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_xcf.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_xpm.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_xv.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\IMG_xxx.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_image\SDL_image.h
+# End Source File
+# End Group
+# Begin Group "SDL_ttf"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_ttf\SDL_ttf.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_ttf\SDL_ttf.h
+# End Source File
+# End Group
 # End Group
 # Begin Group "Header Files"
 
