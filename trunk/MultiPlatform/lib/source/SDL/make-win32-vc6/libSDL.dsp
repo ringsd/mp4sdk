@@ -56,8 +56,8 @@ InputPath=.\Release\libSDL.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy          ..\libSDL.h          ..\..\..\..\inc\  
-	copy          $(InputPath)          ..\..\..\vc-x86\  
+	copy           ..\libSDL.h           ..\..\..\..\inc\  
+	copy           $(InputPath)           ..\..\..\vc-x86\  
 	
 # End Custom Build
 
@@ -74,8 +74,7 @@ SOURCE="$(InputPath)"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\inc" /I "..\include" /I "..\..\..\..\inc\libjpeg" /I "..\..\..\..\inc\libpng" /I "..\..\..\..\inc\freetype" /I "..\..\..\..\inc\zlib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /FD /GZ /c
-# SUBTRACT CPP /YX
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\inc" /I "..\include" /I "..\make-win32-vc6\inc-vc6" /I "..\..\..\..\inc\libjpeg" /I "..\..\..\..\inc\libpng" /I "..\..\..\..\inc\freetype" /I "..\..\..\..\inc\zlib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /FD /GZ /c
 # ADD BASE RSC /l 0x804 /d "_DEBUG"
 # ADD RSC /l 0x804 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -89,8 +88,8 @@ InputPath=.\Debug\libSDL.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy          ..\libSDL.h          ..\..\..\..\inc\  
-	copy          $(InputPath)          ..\..\..\vc-x86\  
+	copy           ..\libSDL.h           ..\..\..\..\inc\  
+	copy           $(InputPath)           ..\..\..\vc-x86\  
 	
 # End Custom Build
 
