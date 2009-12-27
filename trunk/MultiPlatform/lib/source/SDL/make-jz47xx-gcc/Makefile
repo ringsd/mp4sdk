@@ -56,8 +56,8 @@ SRCDIR    = ../ \
 
 INCDIR    =	$(SRCDIR) \
 						../../../../inc \
-						../../../../inc/jpeg \
-						../../../../inc/png \
+						../../../../inc/libjpeg \
+						../../../../inc/libpng \
 						../include \
 						
 					
