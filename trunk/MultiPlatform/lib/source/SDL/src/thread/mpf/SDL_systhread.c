@@ -22,7 +22,7 @@
 #include "SDL_config.h"
 
 #include "SDL_thread.h"
-#include "SDL_systhread.h"
+#include "../SDL_systhread.h"
 #include "../SDL_thread_c.h"
 
 #define OS_STACK_SIZE 1024*4 //4K     /* Stack size */
