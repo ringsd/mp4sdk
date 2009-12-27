@@ -14,16 +14,15 @@
 #include <global.h>
 #include "libbmf.h"
 #include "bmfont.h"
-#include "ccbmf.h"
 
-struct CCBMF{
+typedef struct CCBMF{
 	FILE * fp;
 	FILE * ascfp;
 	u8 * data_buf;
 	XFONT_NLS * nls;
 	BMFONT hdrbmf;
 	BMFONT aschdrbmf;
-};
+}CCBMF;
 
 
 /*------------------------------------------------------------------------

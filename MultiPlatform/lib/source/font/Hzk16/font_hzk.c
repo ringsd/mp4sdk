@@ -100,7 +100,7 @@ STRING_INFO * mtextout_line( u32 * buf, int bufwidth, int bufheight, const char 
 	return &info;
 }
 
-STRING_INFO * mtextout16_line( u16 * buf, int bufwidth, int bufheight, const char *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+STRING_INFO * mtextout16_line_colormode( u16 * buf, int bufwidth, int bufheight, const char *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor, COLOR_MODE color_mode )
 {
 	static STRING_INFO info;
 	int scr_width, scr_height, font_width, font_height;
@@ -132,7 +132,7 @@ STRING_INFO * mtextout16_line( u16 * buf, int bufwidth, int bufheight, const cha
 			
 		ucode = xfont_nls_a2u( textout_nls, acode );
 		
-		xfont_udraw( textout_font, ucode, textout_size, textout_style, fontcolor, bgcolor, LCD_R5G6B5, XFONT_BLEND_MODE_ALPHA,
+		xfont_udraw( textout_font, ucode, textout_size, textout_style, fontcolor, bgcolor, color_mode, XFONT_BLEND_MODE_ALPHA,
 			 x, y+textout_line_height, scr_width, 
 			 buf, &font_width, &font_height, limit );
 
@@ -200,7 +200,7 @@ STRING_INFO * mtextoutW_line( u32 * buf, int bufwidth, int bufheight, const wcha
 	return &info;
 }
 
-STRING_INFO * mtextoutW16_line( u16 * buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+static STRING_INFO * mtextoutW16_line_colormode( u16 * buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor, COLOR_MODE color_mode )
 {
 	static STRING_INFO info;
 	int scr_width, scr_height, font_width, font_height;
@@ -216,7 +216,7 @@ STRING_INFO * mtextoutW16_line( u16 * buf, int bufwidth, int bufheight, const wc
 	
 	while( *str )
 	{
-		xfont_udraw( textout_font, *str, textout_size, textout_style, fontcolor, bgcolor, LCD_R5G6B5, XFONT_BLEND_MODE_ALPHA,
+		xfont_udraw( textout_font, *str, textout_size, textout_style, fontcolor, bgcolor, color_mode, XFONT_BLEND_MODE_ALPHA,
 			 x, y+textout_line_height, scr_width, 
 			 buf, &font_width, &font_height, limit );
 
@@ -242,6 +242,26 @@ STRING_INFO * mtextoutW16_line( u16 * buf, int bufwidth, int bufheight, const wc
 	return &info;
 }
 
+STRING_INFO * mtextout16_line( u16 * buf, int bufwidth, int bufheight, const char *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextout16_line_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_R5G6B5 );
+}
+
+STRING_INFO * mtextoutW16_line( u16 * buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextoutW16_line_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_R5G6B5 );
+}
+
+STRING_INFO * mtextout555_line( u16 * buf, int bufwidth, int bufheight, const char *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextout16_line_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_A1R5G5B5 );
+}
+
+STRING_INFO * mtextoutW555_line( u16 * buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextoutW16_line_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_A1R5G5B5 );
+}
+
 STRING_INFO * textout_line( const char *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
 {
 	return mtextout_line( lcd_bufferui(), screen_get_width(), screen_get_height(), string, min_x, min_y, max_x, max_y, fontcolor, bgcolor );
@@ -261,28 +281,6 @@ STRING_INFO * mtextout( u32 *buf, int bufwidth, int bufheight, const char * stri
 	while( y < max_y )
 	{
 		pinfo = mtextout_line( buf, bufwidth, bufheight, pstr, x, y, max_x, max_y, fontcolor, bgcolor );
-		if( pinfo->length == 0 )
-			break;
-		y += pinfo->height;
-		pstr += pinfo->length;
-		if( max_width < pinfo->width )
-			max_width = pinfo->width;
-	}
-	info.width = max_width;
-	info.height = y-min_y;
-	info.length = pstr - string;
-	return &info;
-}
-
-STRING_INFO * mtextout16( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
-{
-	static STRING_INFO info, *pinfo;
-	const char * pstr = string;
-	int x = min_x, y = min_y;
-	int max_width = 0;
-	while( y < max_y )
-	{
-		pinfo = mtextout16_line( buf, bufwidth, bufheight, pstr, x, y, max_x, max_y, fontcolor, bgcolor );
 		if( pinfo->length == 0 )
 			break;
 		y += pinfo->height;
@@ -318,15 +316,15 @@ STRING_INFO * mtextoutW( u32 *buf, int bufwidth, int bufheight, const wchar_t * 
 	return &info;
 }
 
-STRING_INFO * mtextoutW16( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+STRING_INFO * mtextout16_colormode( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor, COLOR_MODE color_mode )
 {
 	static STRING_INFO info, *pinfo;
-	const wchar_t * pstr = string;
+	const char * pstr = string;
 	int x = min_x, y = min_y;
 	int max_width = 0;
 	while( y < max_y )
 	{
-		pinfo = mtextoutW16_line( buf, bufwidth, bufheight, pstr, x, y, max_x, max_y, fontcolor, bgcolor );
+		pinfo = mtextout16_line_colormode( buf, bufwidth, bufheight, pstr, x, y, max_x, max_y, fontcolor, bgcolor, color_mode );
 		if( pinfo->length == 0 )
 			break;
 		y += pinfo->height;
@@ -338,6 +336,48 @@ STRING_INFO * mtextoutW16( u16 *buf, int bufwidth, int bufheight, const wchar_t 
 	info.height = y-min_y;
 	info.length = pstr - string;
 	return &info;
+}
+
+STRING_INFO * mtextoutW16_colormode( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor, COLOR_MODE color_mode )
+{
+	static STRING_INFO info, *pinfo;
+	const wchar_t * pstr = string;
+	int x = min_x, y = min_y;
+	int max_width = 0;
+	while( y < max_y )
+	{
+		pinfo = mtextoutW16_line_colormode( buf, bufwidth, bufheight, pstr, x, y, max_x, max_y, fontcolor, bgcolor, color_mode );
+		if( pinfo->length == 0 )
+			break;
+		y += pinfo->height;
+		pstr += pinfo->length;
+		if( max_width < pinfo->width )
+			max_width = pinfo->width;
+	}
+	info.width = max_width;
+	info.height = y-min_y;
+	info.length = pstr - string;
+	return &info;
+}
+
+STRING_INFO * mtextout16( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextout16_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_R5G6B5 );
+}
+
+STRING_INFO * mtextoutW16( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextoutW16_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_R5G6B5);
+}
+
+STRING_INFO * mtextout555( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextout16_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_A1R5G5B5 );
+}
+
+STRING_INFO * mtextoutW555( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )
+{
+    return mtextoutW16_colormode( buf, bufwidth, bufheight, string, min_x, min_y, max_x, max_y, fontcolor, bgcolor, LCD_A1R5G5B5 );
 }
 
 STRING_INFO * textout( const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor )

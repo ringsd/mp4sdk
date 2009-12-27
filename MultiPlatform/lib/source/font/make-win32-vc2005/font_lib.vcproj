@@ -30,9 +30,9 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				Description="copy $(TargetPath)"
-				CommandLine="copy $(TargetPath) ..\..\..\vc2005"
+				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
 				AdditionalDependencies=""
-				Outputs="..\..\..\vc2005\$(TargetName)"
+				Outputs="..\..\..\vc2005\$(TargetName) "
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -109,9 +109,9 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				Description="copy $(TargetPath)"
-				CommandLine="copy $(TargetPath) ..\..\..\vc2005"
+				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
 				AdditionalDependencies=""
-				Outputs="..\..\..\vc2005\$(TargetName)"
+				Outputs="..\..\..\vc2005\$(TargetName)  "
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -244,6 +244,14 @@
 			</File>
 			<File
 				RelativePath="..\ft2.h"
+				>
+			</File>
+			<File
+				RelativePath="..\textout.c"
+				>
+			</File>
+			<File
+				RelativePath="..\textout.h"
 				>
 			</File>
 			<Filter
