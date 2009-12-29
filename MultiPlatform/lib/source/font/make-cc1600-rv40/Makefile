@@ -34,7 +34,7 @@ AR				=	ar rus
 # Directories
 # *************************************************************************
 
-ROOTDIR    = ../
+ROOTDIR    = ..
 
 FT2_ROOT       =  $(ROOTDIR)/freetype-2.3.8
 FT2_INC_ROOT   =  $(FT2_ROOT)/include
