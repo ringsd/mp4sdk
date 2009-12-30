@@ -30,7 +30,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				Description="copy $(TargetPath) ..\..\..\..\lib\vc2005"
-				CommandLine="copy $(TargetPath) ..\..\..\..\lib\vc2005&#x0D;&#x0A;copy ..\MM_Image.H ..\..\..\..\inc&#x0D;&#x0A;"
+				CommandLine="copy $(TargetPath) ..\..\..\..\lib\vc2005&#x0D;&#x0A;&#x0D;&#x0A;"
 				AdditionalDependencies=""
 				Outputs="..\..\..\..\lib\vc2005\$(TargetFileName)"
 			/>
@@ -47,12 +47,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				InlineFunctionExpansion="1"
-				AdditionalIncludeDirectories="..\include;..\..\..\..\inc;&quot;E:\Program Files\Microsoft Platform SDK for Windows XP SP2\Include&quot;;&quot;..\..\..\..\inc-vc8&quot;;..\src\thread"
+				AdditionalIncludeDirectories="..\include;..\..\..\..\inc;..\..\..\..\inc\libjpeg;..\..\..\..\inc\libpng;..\..\..\..\inc\zlib;..\..\..\..\inc\freetype;&quot;..\..\..\..\inc-vc8&quot;;..\src\thread;..\SDL_mixer\timidity;..\SDL_mixer\libmikmod\include;..\SDL_mixer\libmad;&quot;E:\Program Files\Microsoft Platform SDK for Windows XP SP2\Include&quot;"
 				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE"
 				StringPooling="true"
 				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
-				PrecompiledHeaderFile=".\Release/MultiMedia.pch"
 				AssemblerListingLocation=".\Release/"
 				ObjectFile=".\Release/"
 				ProgramDataBaseFileName=".\Release/"
@@ -72,7 +71,7 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
-				OutputFile=".\Release\MultiMedia.lib"
+				OutputFile=".\Release\libSDL.lib"
 				SuppressStartupBanner="true"
 			/>
 			<Tool
@@ -110,9 +109,9 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				Description="copy $(TargetPath) ..\..\..\..\lib\vc2005"
-				CommandLine="copy $(TargetPath) ..\..\..\..\lib\vc2005&#x0D;&#x0A;"
-				AdditionalDependencies=""
-				Outputs="..\..\..\..\lib\vc2005\$(TargetFileName)"
+				CommandLine="copy $(TargetPath) ..\..\..\..\lib\vc2005&#x0D;&#x0A;&#x0D;&#x0A;"
+				AdditionalDependencies="copy $(TargetPath) ..\..\..\..\lib\vc2005"
+				Outputs="..\..\..\..\lib\vc2005\$(TargetFileName);..\..\..\..\lib\vc2005\$(TargetFileName)"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -126,7 +125,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\include;..\..\..\..\inc;..\..\..\..\inc\libjpeg;..\..\..\..\inc\libpng;..\..\..\..\inc\zlib;..\..\..\..\inc\freetype;&quot;..\..\..\..\inc-vc8&quot;;..\src\thread;&quot;E:\Program Files\Microsoft Platform SDK for Windows XP SP2\Include&quot;"
+				AdditionalIncludeDirectories="..\include;..\..\..\..\inc;..\..\..\..\inc\libjpeg;..\..\..\..\inc\libpng;..\..\..\..\inc\zlib;..\..\..\..\inc\freetype;&quot;..\..\..\..\inc-vc8&quot;;..\src\thread;..\SDL_mixer\timidity;..\SDL_mixer\libmikmod\include;..\SDL_mixer\libmad;&quot;E:\Program Files\Microsoft Platform SDK for Windows XP SP2\Include&quot;"
 				PreprocessorDefinitions="_CRT_SECURE_NO_DEPRECATE"
 				MinimalRebuild="false"
 				BasicRuntimeChecks="0"
@@ -805,6 +804,366 @@
 				RelativePath="..\SDL_ttf\SDL_ttf.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="SDL_mixer"
+			>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_flac.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_flac.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_mod.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_mod.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_mp3.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_mp3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_ogg.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\dynamic_ogg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\effect_position.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\effect_stereoreverse.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\effects_internal.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\effects_internal.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_aiff.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_aiff.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_flac.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_flac.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_ogg.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_ogg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_voc.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\load_voc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\mixer.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_cmd.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_cmd.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_flac.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_flac.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_mad.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_mad.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_mod.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_mod.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_ogg.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\music_ogg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\SDL_mixer.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\SDLmixer_buildcfg.h"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\wavestream.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL_mixer\wavestream.h"
+				>
+			</File>
+			<Filter
+				Name="libmad"
+				>
+				<File
+					RelativePath="..\SDL_mixer\libmad\bit.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\bit.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\decoder.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\decoder.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\fixed.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\fixed.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\frame.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\frame.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\huffman.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\huffman.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\layer12.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\layer12.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\layer3.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\layer3.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\libmadconfig.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\libmadglobal.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\mad.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\madtimer.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\madtimer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\madversion.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\madversion.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\stream.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\stream.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\synth.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\libmad\synth.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="timidity"
+				>
+				<File
+					RelativePath="..\SDL_mixer\timidity\common.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\common.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\config.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\ctrlmode.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\ctrlmode.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\filter.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\filter.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\instrum.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\instrum.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\mix.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\mix.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\output.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\output.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\playmidi.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\playmidi.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\readmidi.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\readmidi.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\resample.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\resample.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\sdl_a.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\sdl_c.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\tables.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\tables.h"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\timidity.c"
+					>
+				</File>
+				<File
+					RelativePath="..\SDL_mixer\timidity\timidity.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="libmikmod"
+				>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>
