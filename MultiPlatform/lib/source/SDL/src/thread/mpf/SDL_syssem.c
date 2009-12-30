@@ -39,14 +39,12 @@ SDL_sem *SDL_CreateSemaphore(Uint32 initial_value)
 	sem = (SDL_sem *)malloc(sizeof(*sem));
 	if ( sem ) {
 		sem->state = 0;
-		
 	} else {
 		SDL_SetError("SDL_CreateSemaphore OutOfMemory");
 
 	}
 	return sem;
 }
-#define  OS_DEL_ALWAYS                1u
 
 void SDL_DestroySemaphore(SDL_sem *sem)
 {
@@ -73,12 +71,12 @@ int SDL_SemWaitTimeout(SDL_sem *sem, Uint32 timeout)
 	{
       sys_delay(1);	
 	}
-	 return 0;
+	return 0;
 }
 
 int SDL_SemWait(SDL_sem *sem)
 {
-	return SDL_SemWaitTimeout(sem, 1*1000);
+	return SDL_SemTryWait(sem);
 }
 
 Uint32 SDL_SemValue(SDL_sem *sem)

@@ -54,7 +54,15 @@ SRCDIR    = ../ \
 	../src/video/mpf/ \
 	../SDL_image/ \
 	../SDL_ttf/ \
-            
+	../SDL_mixer/ \
+	../SDL_mixer/libmad/ \
+	../SDL_mixer/timidity/ \
+	../SDL_mixer/libmikmod/drivers \
+	../SDL_mixer/libmikmod/include \
+	../SDL_mixer/libmikmod/loaders \
+	../SDL_mixer/libmikmod/mmio \
+	../SDL_mixer/libmikmod/playercode \
+	
 
 INCDIR    =	$(SRCDIR) \
 						../../../../inc \
@@ -80,9 +88,9 @@ ENV_MACRO =
 W_OPTS    = -Wall -finline-functions -fomit-frame-pointer -msoft-float \
 -fno-builtin -fno-exceptions
 
-CC_OPTS   = -c -g -Wall -W  -$(ENDIAN) $(INCLUDE) -G0 \
+CC_OPTS   = -c  -Wall -W  -$(ENDIAN) $(INCLUDE) -G0 \
 -DNO_DEBUG -DGCC_BUILD -DMPU_JZ4740 $(ENV_MACRO) \
--fno-pic -mips32 $(W_OPTS) -mno-abicalls -funsigned-char -pipe -G 0 -O \
+-fno-pic -mips32 $(W_OPTS) -mno-abicalls -funsigned-char -pipe -G 0 -O2 \
 -DNDEBUG -D_LIB -DFT2_BUILD_LIBRARY \
 
 CPP_OPTS  =	-c -fno-exceptions -fno-rtti -Wall -W \
