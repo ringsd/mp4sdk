@@ -48,6 +48,16 @@ SRCDIR    = $(ROOTDIR) \
             $(ROOTDIR)/src/timer/mpf \
             $(ROOTDIR)/src/video \
             $(ROOTDIR)/src/video/mpf \
+           	$(ROOTDIR)/SDL_image/ \
+	          $(ROOTDIR)/SDL_ttf/ \
+	          $(ROOTDIR)/SDL_mixer/ \
+	          $(ROOTDIR)/SDL_mixer/libmad/ \
+	          $(ROOTDIR)/SDL_mixer/timidity/ \
+	          $(ROOTDIR)/SDL_mixer/libmikmod/drivers \
+	          $(ROOTDIR)/SDL_mixer/libmikmod/include \
+	          $(ROOTDIR)/SDL_mixer/libmikmod/loaders \
+	          $(ROOTDIR)/SDL_mixer/libmikmod/mmio \
+	          $(ROOTDIR)/SDL_mixer/libmikmod/playercode \
 
 INCDIR    =	$(SRCDIR) \
             $(INC_ENV) \
@@ -107,7 +117,15 @@ SRC_C    =	SDL.c SDL_error.c SDL_fatal.c \
             SDL_timer.c \
             SDL_systimer.c \
             SDL_blit.c SDL_blit_0.c SDL_blit_1.c SDL_blit_A.c SDL_blit_N.c SDL_bmp.c SDL_cursor.c SDL_gamma.c SDL_pixels.c SDL_RLEaccel.c SDL_stretch.c SDL_surface.c SDL_video.c SDL_yuv.c SDL_yuv_mmx.c SDL_yuv_sw.c \
-            SDL_mpf_events.c SDL_mpf_mouse.c SDL_mpf_video.c
+            SDL_mpf_events.c SDL_mpf_mouse.c SDL_mpf_video.c \
+            IMG.c IMG_bmp.c IMG_gif.c IMG_ImageIO.c IMG_jpg.c IMG_lbm.c IMG_pcx.c IMG_png.c IMG_pnm.c IMG_tga.c IMG_tif.c IMG_xcf.c IMG_xpm.c IMG_xv.c IMG_xxx.c \
+            SDL_ttf.c \
+            dynamic_flac.c dynamic_mod.c dynamic_mp3.c dynamic_ogg.c effect_position.c effect_stereoreverse.c effects_internal.c load_aiff.c load_flac.c load_ogg.c load_voc.c mixer.c music.c music_cmd.c music_flac.c music_mad.c music_mod.c music_ogg.c wavestream.c \
+            common.c ctrlmode.c filter.c instrum.c mix.c output.c playmidi.c readmidi.c resample.c sdl_a.c sdl_c.c tables.c timidity.c \
+            drv_nos.c \
+            load_mod.c \
+            mmalloc.c mmerror.c mmio.c \
+            mdreg.c mdriver.c mdulaw.c mloader.c mlreg.c mlutil.c mplayer.c munitrk.c mwav.c npertab.c sloader.c virtch2.c virtch.c virtch_common.c
 						
            
 SRC_CPP  =

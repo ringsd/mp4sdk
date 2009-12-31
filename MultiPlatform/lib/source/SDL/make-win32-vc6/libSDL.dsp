@@ -56,8 +56,8 @@ InputPath=.\Release\libSDL.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy           ..\libSDL.h           ..\..\..\..\inc\  
-	copy           $(InputPath)           ..\..\..\vc-x86\  
+	copy            ..\libSDL.h            ..\..\..\..\inc\  
+	copy            $(InputPath)            ..\..\..\vc-x86\  
 	
 # End Custom Build
 
@@ -74,7 +74,7 @@ SOURCE="$(InputPath)"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\inc" /I "..\include" /I "..\make-win32-vc6\inc-vc6" /I "..\..\..\..\inc\libjpeg" /I "..\..\..\..\inc\libpng" /I "..\..\..\..\inc\freetype" /I "..\..\..\..\inc\zlib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\..\..\inc" /I "..\include" /I "..\make-win32-vc6\inc-vc6" /I "..\SDL_mixer\timidity" /I "..\SDL_mixer\libmad" /I "..\SDL_mixer\libmikmod\include" /I "..\..\..\..\inc\libjpeg" /I "..\..\..\..\inc\libpng" /I "..\..\..\..\inc\freetype" /I "..\..\..\..\inc\zlib" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /FR /FD /GZ /c
 # ADD BASE RSC /l 0x804 /d "_DEBUG"
 # ADD RSC /l 0x804 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -88,8 +88,8 @@ InputPath=.\Debug\libSDL.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy           ..\libSDL.h           ..\..\..\..\inc\  
-	copy           $(InputPath)           ..\..\..\vc-x86\  
+	copy            ..\libSDL.h            ..\..\..\..\inc\  
+	copy            $(InputPath)            ..\..\..\vc-x86\  
 	
 # End Custom Build
 
@@ -632,6 +632,478 @@ SOURCE=..\SDL_ttf\SDL_ttf.c
 # Begin Source File
 
 SOURCE=..\SDL_ttf\SDL_ttf.h
+# End Source File
+# End Group
+# Begin Group "SDL_mixer"
+
+# PROP Default_Filter ""
+# Begin Group "libmad"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\bit.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\bit.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\decoder.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\decoder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\fixed.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\fixed.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\frame.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\frame.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\huffman.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\huffman.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\layer12.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\layer12.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\layer3.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\layer3.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\libmadconfig.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\libmadglobal.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\mad.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\madtimer.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\madtimer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\madversion.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\madversion.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\stream.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\stream.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\synth.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmad\synth.h
+# End Source File
+# End Group
+# Begin Group "libmikmod"
+
+# PROP Default_Filter ""
+# Begin Group "drivers"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\drivers\drv_nos.c
+# End Source File
+# End Group
+# Begin Group "include"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\include\mikmod.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\include\mikmod_build.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\include\mikmod_internals.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\include\modconfig.h
+# End Source File
+# End Group
+# Begin Group "loaders"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\loaders\load_mod.c
+# End Source File
+# End Group
+# Begin Group "mmio"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\mmio\mmalloc.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\mmio\mmerror.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\mmio\mmio.c
+# End Source File
+# End Group
+# Begin Group "playercode"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mdreg.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mdriver.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mdulaw.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mloader.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mlreg.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mlutil.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mplayer.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\munitrk.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\mwav.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\npertab.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\sloader.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\virtch.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\virtch2.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\libmikmod\playercode\virtch_common.c
+# End Source File
+# End Group
+# End Group
+# Begin Group "timidity"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\common.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\common.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\config.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\ctrlmode.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\ctrlmode.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\filter.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\filter.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\instrum.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\instrum.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\mix.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\mix.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\output.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\output.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\playmidi.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\playmidi.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\readmidi.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\readmidi.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\resample.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\resample.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\sdl_a.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\sdl_c.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\tables.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\tables.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\timidity.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\timidity\timidity.h
+# End Source File
+# End Group
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_flac.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_flac.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_mod.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_mod.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_mp3.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_mp3.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_ogg.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\dynamic_ogg.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\effect_position.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\effect_stereoreverse.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\effects_internal.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\effects_internal.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_aiff.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_aiff.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_flac.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_flac.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_ogg.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_ogg.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_voc.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\load_voc.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\mixer.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_cmd.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_cmd.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_flac.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_flac.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_mad.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_mad.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_mod.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_mod.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_ogg.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\music_ogg.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\SDL_mixer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\SDLmixer_buildcfg.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\wavestream.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\SDL_mixer\wavestream.h
 # End Source File
 # End Group
 # End Group
