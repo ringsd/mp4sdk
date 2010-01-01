@@ -23,7 +23,7 @@ fscanf (FILE *stream, const char *format, ...)
   int done;
   char buf[1024];
   va_start (arg, format);
-  int save_seek = ftell(save_seek);
+  int save_seek = ftell(format);
   fread( buf, 1, sizeof(buf), stream );
   done = vsscanf (buf, format, arg);
   //done = __vfscanf (stream, format, arg);
