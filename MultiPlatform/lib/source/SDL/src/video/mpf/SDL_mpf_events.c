@@ -47,7 +47,9 @@ static  MPFKey mpf_keymap[]={
 };
 
 
-volatile Uint32 SDL_lastkeys;
+static Uint32 SDL_lastkeys;
+
+static Uint32 mousemove_sta=0,mousebtn_sta=0;
 
 void MPF_PumpEvents(_THIS)
 {	
@@ -56,6 +58,8 @@ void MPF_PumpEvents(_THIS)
 	Uint32 keysu = SDL_lastkeys&~keys;//µ¯ÆðµÄ¼ü
 	SDL_keysym sym;
 	Uint32 i;
+	Uint32 mouse_x,mouse_y,mouse_sta;
+
 
 	SDL_lastkeys=keys;
 
@@ -74,6 +78,62 @@ void MPF_PumpEvents(_THIS)
 			SDL_PrivateKeyboard(SDL_RELEASED,&sym);
 		}
 	}
+#if 0 //°´¼ü°æ
+	mouse_x=0;mouse_y=0;
+	if (keys&SYSKEY_UP)
+	{
+		mouse_y-=3;
+	}
+	if (keys&SYSKEY_DOWN)
+	{
+		mouse_y+=3;
+	}
+	if (keys&SYSKEY_RIGHT)
+	{
+		mouse_x+=3;
+	}
+	if (keys&SYSKEY_LEFT)
+	{
+		mouse_x-=3;
+	}
+	if (mouse_x!=0||mouse_y!=0)
+	{
+		SDL_PrivateMouseMotion(0, 1, mouse_x, mouse_y);
+	}
+	if (keysd&SYSKEY_A)
+	{
+		SDL_PrivateMouseButton(SDL_PRESSED, 1, 0, 0);
+	}	
+	if (keysu&SYSKEY_A)
+	{
+		SDL_PrivateMouseButton(SDL_RELEASED, 1, 0, 0);
+	}
+#endif
+
+	if( sys_get_pointer(&mouse_x,&mouse_y,&mouse_sta) == 0 ){
+		if (mouse_sta>0)
+		{
+			if (mousemove_sta==0||mousebtn_sta!=0)
+			{
+				SDL_PrivateMouseMotion(0, 0, mouse_x, mouse_y);mousemove_sta=1;
+			}
+			else
+			{
+				if (mousebtn_sta==0)
+				{
+					SDL_PrivateMouseButton(SDL_PRESSED, 1, mouse_x, mouse_y);mousebtn_sta=mouse_sta;
+				}
+			}
+		}
+		else
+		{
+			if (mousebtn_sta!=0)
+			{
+				SDL_PrivateMouseButton(SDL_RELEASED, 1,0, 0);mousemove_sta=0;mousebtn_sta=0;
+			}
+		}
+	}
+
 }
 
 

@@ -133,7 +133,7 @@ SDL_Surface *MPF_SetVideoMode(_THIS, SDL_Surface *current,
 	current->h = height;
 	current->pitch = width  * (bpp / 8);
 	current->pixels = lcd_bufferui();
-	SDL_ShowCursor(0);// вўВиЪѓБъ
+	//SDL_ShowCursor(0);// вўВиЪѓБъ
 	return(current);
 }
 
