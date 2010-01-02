@@ -1,0 +1,90 @@
+;/*************************************************************************/
+;/*                                                                       */
+;/*               Copyright CHINACHIP CORPORATION 2008                    */
+;/*                         All Rights Reserved.                          */
+;/*                                                                       */
+;/* THIS WORK CONTAINS TRADE SECRET AND PROPRIETARY INFORMATION WHICH IS  */
+;/* THE PROPERTY OF CHINA CHIP CORPORATION OR ITS LICENSORS AND IS        */
+;/* SUBJECT TO LICENSE TERMS.                                             */
+;/*                                                                       */
+;/*************************************************************************/
+
+;/*************************************************************************/
+;/*                                                                       */
+;/* 文件名：                                                 版本         */
+;/*                                                                       */
+;/*     DLL.SCF                                   DLL LINK SCRIPT V1.0    */
+;/*                                                                       */
+;/* 功能描述：                                                            */
+;/*     该文件包含了 DLL 的链接配置                                       */
+;/*                                                                       */
+;/* 结构体列表：                                                          */
+;/*     无                                                                */
+;/*                                                                       */
+;/* 函数列表：                                                            */
+;/*     无                                                                */
+;/*                                                                       */
+;/* 外部依赖：                                                            */
+;/*     无                                                                */
+;/*                                                                       */
+;/* 更改记录：                                                            */
+;/*                                                                       */
+;/*   日期        作者            摘要                                    */
+;/*                                                                       */
+;/*  2008.10.20   leeo          初始版本 V1.0                             */
+;/*************************************************************************/
+
+
+SDRAM_LOAD 0x11a00000
+{
+	RO_RW_EXEC +0
+	{
+		* (init_entry)
+		* (+RO, +RW)
+	}
+	
+	ZI_EXEC +0
+	{
+		* (+ZI)
+	}
+}
+
+EXPORT_STRING_LOAD +0
+{
+	EXPORT_STRING_EXEC +0
+	{
+		* (export_string)
+	}
+}
+
+EXPORT_TABLE_LOAD +0
+{
+	EXPORT_TABLE_EXEC +0
+	{
+		* (export_table)
+	}
+}
+
+IMPORT_STRING_LOAD +0
+{
+	IMPORT_STRING_EXEC +0
+	{
+		* (import_string)
+	}
+}
+
+IMPORT_TABLE_LOAD +0
+{
+	IMPORT_TABLE_EXEC +0
+	{
+		* (import_table)
+	}
+}
+
+SECTION_INFO_LOAD +0
+{
+	SECTION_INFO_EXEC +0
+	{
+		* (section_info)
+	}
+}
