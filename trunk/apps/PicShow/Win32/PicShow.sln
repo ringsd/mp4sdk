@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C++ Express 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PicShow", "PicShow.vcproj", "{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MultiMedia", "..\..\lib\source\multimedia\make-win32-vc2005\MultiMedia.vcproj", "{963AA5F0-4411-4A5F-ADC4-0602364784F6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		mips|Win32 = mips|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}.Debug|Win32.Build.0 = Debug|Win32
+		{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}.mips|Win32.ActiveCfg = Release|Win32
+		{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}.mips|Win32.Build.0 = Release|Win32
+		{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}.Release|Win32.ActiveCfg = Release|Win32
+		{BF0C2533-8D31-4AAE-94F8-5206AB7D4A2F}.Release|Win32.Build.0 = Release|Win32
+		{963AA5F0-4411-4A5F-ADC4-0602364784F6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{963AA5F0-4411-4A5F-ADC4-0602364784F6}.Debug|Win32.Build.0 = Debug|Win32
+		{963AA5F0-4411-4A5F-ADC4-0602364784F6}.mips|Win32.ActiveCfg = Debug|Win32
+		{963AA5F0-4411-4A5F-ADC4-0602364784F6}.mips|Win32.Build.0 = Debug|Win32
+		{963AA5F0-4411-4A5F-ADC4-0602364784F6}.Release|Win32.ActiveCfg = Release|Win32
+		{963AA5F0-4411-4A5F-ADC4-0602364784F6}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
