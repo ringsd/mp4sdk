@@ -25,7 +25,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
-				AdditionalDependencies=""
+				AdditionalDependencies=" "
 				Outputs="..\..\..\vc2005\$(TargetFileName)"
 			/>
 			<Tool
@@ -84,7 +84,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
-				AdditionalDependencies=""
+				AdditionalDependencies=" "
 				Outputs="..\..\..\vc2005\$(TargetFileName)"
 			/>
 			<Tool
