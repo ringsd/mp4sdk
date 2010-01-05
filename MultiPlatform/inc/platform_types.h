@@ -25,8 +25,13 @@ typedef unsigned long u32;
 
 #define UTYPES_DEFINED
 
+/* Define NULL pointer value */
 #ifndef NULL
-#define NULL (void*)0
+#ifdef __cplusplus
+#define NULL    0
+#else
+#define NULL    ((void *)0)
+#endif
 #endif
 
 #ifdef __cplusplus
