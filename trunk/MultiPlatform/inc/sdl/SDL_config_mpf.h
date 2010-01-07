@@ -91,7 +91,7 @@
 #define SDL_AUDIO_DRIVER_MPF	1
 
 /* Enable the stub cdrom driver (src/cdrom/dummy/\*.c) */
-#define SDL_CDROM_DISABLED	1
+#define SDL_CDROM_DISABLED	0
 
 /* Enable various input drivers */
 #define SDL_JOYSTICK_DISABLED	1
