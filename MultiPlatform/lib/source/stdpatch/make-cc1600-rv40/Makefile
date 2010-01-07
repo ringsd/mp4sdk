@@ -112,6 +112,10 @@ SRC_C   = _splitpath.c \
 					sscanf.c \
 					strdup.c \
 					getrusage.c \
+					fstat.c \
+					ftruncate.c \
+					rmdir.c \
+					freopen.c \
 					
 SRC_CPP =
 SRC_S   = setjmp-arm.S
