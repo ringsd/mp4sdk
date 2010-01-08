@@ -246,14 +246,6 @@
 				RelativePath="..\ft2.h"
 				>
 			</File>
-			<File
-				RelativePath="..\textout.c"
-				>
-			</File>
-			<File
-				RelativePath="..\textout.h"
-				>
-			</File>
 			<Filter
 				Name="freetype2"
 				>
