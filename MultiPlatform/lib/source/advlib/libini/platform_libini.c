@@ -10,9 +10,7 @@
 		Copyright (c)  Yu.liang <lzysoft@126.com> 2007-2009
 		All rights reserved.
 ***************************************************************************/
-#define _platform_libini_h_
 #include <global.h>
-#undef _platform_libini_h_
 #include "platform_libini.h"
 #include <iniparser.h>
 

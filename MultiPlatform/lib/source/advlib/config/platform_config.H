@@ -32,10 +32,22 @@ typedef struct CONFIG_LIST {
 	void * value;
 } CONFIG_LIST;
 
+typedef struct CONFIG_KEYS_LIST {
+    VALUE_TYPE type;
+    const char * key;
+    void * value;
+} CONFIG_KEYS_LIST;
+
 int platform_config_load( const char * ini_path, CONFIG_LIST config_list[] );
 int platform_config_save( const char * ini_path, CONFIG_LIST config_list[] );
 int platform_load_keymap( const char * section, const char * ini_path, KEYMAP * keymap, KEYNAME * keyname );
 int platform_save_keymap( const char * section, const char * ini_path, KEYMAP * keymap, KEYNAME * keyname );
+int config_load_keys( INI_FILE * ini, const char * section, CONFIG_KEYS_LIST * config_list );
+int config_save_keys( INI_FILE * ini, const char * section, CONFIG_KEYS_LIST * config_list );
+int config_save_keymap( INI_FILE * ini, const char * section, KEYMAP * keymap, KEYNAME * keyname );
+int config_load_keymap( INI_FILE * ini, const char * section, KEYMAP * keymap, KEYNAME * keyname );
+int ini_config_save( INI_FILE * ini, CONFIG_LIST config_list[] );
+int ini_config_load( INI_FILE * ini, CONFIG_LIST config_list[] );
 
 #ifdef __cplusplus
 }
