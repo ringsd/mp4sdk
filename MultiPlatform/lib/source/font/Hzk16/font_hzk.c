@@ -30,7 +30,7 @@ int textout_init( char * fname, int size, int line_height, int word_spacing, int
 {
 	if( (textout_font = xfont_open( fname )) == NULL )
 		goto err; 
-	if( (textout_nls = xfont_nls_open( XFONT_CP_936 )) == NULL )
+	if( (textout_nls = xfont_nls_open( codepage )) == NULL )
 		goto err;
 	textout_size = size;
 	textout_style = style;
