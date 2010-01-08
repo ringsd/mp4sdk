@@ -134,6 +134,15 @@ static int cp932pos(unsigned char c1, unsigned char c2)
     return pos;
 }
 
+static int unicodepos(unsigned short code)
+{
+    int pos;
+    
+    pos = code;
+    
+    return pos;
+}
+
 static int strserch( const char * src, const char * str )
 {
 	while( *src )
@@ -223,12 +232,15 @@ CCBMF * ccbmf_open( const char * path )
 		goto err;
 	fread( &bmf->hdrbmf, sizeof(BMFONT), 1, bmf->fp );
 	bmf->ascfp = fopen( ascfiledir(path), "rb" );
-	if( !bmf->ascfp )
-		goto err;
-	fread( &bmf->aschdrbmf, sizeof(BMFONT), 1, bmf->ascfp );
-	bmf->data_buf = malloc( max(bmf->hdrbmf.bpchar,bmf->aschdrbmf.bpchar) );
-	if( !bmf->data_buf )
-		goto err;
+	if( bmf->ascfp )
+	{
+	    //bmf->ascfp = fopen( ascfiledir(path), "rb" );
+		//goto err;
+		fread( &bmf->aschdrbmf, sizeof(BMFONT), 1, bmf->ascfp );
+	}
+	bmf->data_buf = malloc( max(bmf->hdrbmf.bpchar + 2,bmf->aschdrbmf.bpchar + 2) );
+    if( !bmf->data_buf )
+    	goto err;
 	bmf->nls = xfont_nls_open(get_xfont_copepage(bmf->hdrbmf.type));
 	return bmf;
 err:
@@ -252,7 +264,8 @@ static u8 * get_offset( CCBMF * bmf, int code, int * width, int * height, int * 
 	int c2 = (code>>8)&0xFF;
 	FILE * fbmf;
 	BMFONT * hdrbmf;
-	if( c2 == 0 )
+	
+	if( c2 == 0 && bmf->ascfp )
 	{
 		hdrbmf = &bmf->aschdrbmf;
 		fbmf = bmf->ascfp;
@@ -283,6 +296,9 @@ static u8 * get_offset( CCBMF * bmf, int code, int * width, int * height, int * 
 		case BMF_CP949:
 			offset = cp949pos(c1,c2);
 			break;
+		case BMF_UNICODE:
+		    offset = unicodepos(code);
+		    break;
 	}
 	if( hdrbmf->width != 0 )
 	{
@@ -296,11 +312,11 @@ static u8 * get_offset( CCBMF * bmf, int code, int * width, int * height, int * 
 	}
 	else
 	{
-		int foff = offset*hdrbmf->bpchar+sizeof(BMFONT);
+		int foff = offset*(hdrbmf->bpchar + 2)+sizeof(BMFONT);
 		fseek( fbmf, foff, SEEK_SET );
-		fread( bmf->data_buf, hdrbmf->bpchar, 1, fbmf );
+		fread( bmf->data_buf, hdrbmf->bpchar + 2, 1, fbmf );
 		*width = bmf->data_buf[0];
-		*height = bmf->data_buf[1];
+		*height = hdrbmf->height;
 		*bpline = hdrbmf->bpline;
 		return bmf->data_buf+2;
 	}
@@ -310,9 +326,18 @@ int ccbmf_read( CCBMF * bmf, int code, int size, int style, u8 * buf, int limit,
 {
 	int width, height, bpline;
 	int x, y;
-	u8 * bmf_buf = get_offset( bmf, 
-		xfont_nls_u2a(bmf->nls,code), &width, &height, &bpline );
+	u8 * bmf_buf;
 	u8 * dst = buf;
+	
+	if( bmf->hdrbmf.type == BMF_UNICODE )
+	{
+	    bmf_buf = get_offset( bmf, code, &width, &height, &bpline );
+	}
+	else
+	{
+	    bmf_buf = get_offset( bmf, xfont_nls_u2a(bmf->nls,code), &width, &height, &bpline );
+	}
+	
 	for( y = 0; y < height; y++ )
 	{
 		u8 * src = bmf_buf + y * bpline;
@@ -375,11 +400,16 @@ const char * ccbmf_name( CCBMF * bmf )
 
 void ccbmf_close( CCBMF * bmf )
 {
-	fclose( bmf->fp );
-	fclose( bmf->ascfp );
-	xfont_nls_close(bmf->nls);
-	free( bmf->data_buf );
-	free( bmf );
+    if( bmf->fp )
+	    fclose( bmf->fp );
+	if( bmf->ascfp )
+	    fclose( bmf->ascfp );
+	if( bmf->nls )
+	    xfont_nls_close(bmf->nls);
+	if( bmf->data_buf )
+	    free( bmf->data_buf );
+	if( bmf )
+	    free( bmf );
 }
 
 
