@@ -14,7 +14,6 @@
 #include <global.h>
 #include "xgui.h"
 //#include "bitmap.h"
-#include "GA_2D.h"
 #include "MM_Image.h"
 
 enum{
