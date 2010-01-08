@@ -45,6 +45,8 @@ int ps_config_save( void )
 {
 	u8 root[ MAX_PATH ];
 	u8 * point;
+	INI_FILE * ini;
+
 	sys_get_path( root, MAX_PATH );	//获取应用程序路径
 	point = strrchr( root, '\\' );	//寻找路径分隔符
 	if( point == NULL )
@@ -56,18 +58,29 @@ int ps_config_save( void )
 		*point = 0;
 	}
 	strcat( root, "\\PicShow.ini" );
-	platform_config_save( root, conig_list );
-	platform_save_keymap( "KEYMAP NORMAL", root, pskeymap_right0, ps_keyname );
-	platform_save_keymap( "KEYMAP RIGHT90", root, pskeymap_right90, ps_keyname );
-	platform_save_keymap( "KEYMAP RIGHT180", root, pskeymap_right180, ps_keyname );
-	platform_save_keymap( "KEYMAP RIGHT270", root, pskeymap_right270, ps_keyname );
+	
+	ini = ini_file_open( root, INI_OPEN_MODE_RW );
+	if( ini == NULL )
+		goto err;
+		
+	ini_config_save( ini, conig_list );
+	config_save_keymap( ini, "KEYMAP NORMAL", pskeymap_right0, ps_keyname );
+	config_save_keymap( ini, "KEYMAP RIGHT90",  pskeymap_right90, ps_keyname );
+	config_save_keymap( ini, "KEYMAP RIGHT180", pskeymap_right180, ps_keyname );
+	config_save_keymap( ini, "KEYMAP RIGHT270", pskeymap_right270, ps_keyname );
+
+	ini_file_close( ini );
 	return 0;
+err:
+	return -1;
 }
 
 int ps_config_load( void )
 {
 	u8 root[ MAX_PATH ];
 	u8 * point;
+	INI_FILE * ini;
+	
 	sys_get_path( root, MAX_PATH );	//获取应用程序路径
 	point = strrchr( root, '\\' );	//寻找路径分隔符
 	if( point == NULL )
@@ -79,10 +92,20 @@ int ps_config_load( void )
 		*point = 0;
 	}
 	strcat( root, "\\PicShow.ini" );
-	platform_config_load( root, conig_list );
-	platform_load_keymap( "KEYMAP NORMAL", root, pskeymap_right0, ps_keyname );
-	platform_load_keymap( "KEYMAP RIGHT90", root, pskeymap_right90, ps_keyname );
-	platform_load_keymap( "KEYMAP RIGHT180", root, pskeymap_right180, ps_keyname );
-	platform_load_keymap( "KEYMAP RIGHT270", root, pskeymap_right270, ps_keyname );
+	
+	ini = ini_file_open( root, INI_OPEN_MODE_READ );
+	if( ini == NULL )
+		goto err;
+		
+	ini_config_load( ini, conig_list );
+	config_load_keymap( ini, "KEYMAP NORMAL", pskeymap_right0, ps_keyname );
+	config_load_keymap( ini, "KEYMAP RIGHT90",  pskeymap_right90, ps_keyname );
+	config_load_keymap( ini, "KEYMAP RIGHT180", pskeymap_right180, ps_keyname );
+	config_load_keymap( ini, "KEYMAP RIGHT270", pskeymap_right270, ps_keyname );
+
+	ini_file_close( ini );
+	
 	return 0;
+err:
+	return -1;
 }
