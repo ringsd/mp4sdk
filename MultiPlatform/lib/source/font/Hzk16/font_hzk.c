@@ -1,3 +1,16 @@
+/***************************************************************************
+
+		font_hzk.c
+
+		defalut.
+
+		TIME LIST:
+		CREATE	Rainy	2010-01-09 21:40:34
+
+		Copyright (c)  Yu.liang <lzysoft@126.com> 2007-2009
+		All rights reserved.
+
+***************************************************************************/
 #include <global.h>
 #include "font.h"
 
@@ -48,7 +61,6 @@ STRING_INFO * mtextout_line( u32 * buf, int bufwidth, int bufheight, const char 
 	int scr_width, scr_height, font_width, font_height;
 	int limit;
 	u16 ucode;
-	u16 acode;
 	int x = min_x;
 	int y = min_y;
 	const u8 * str = (u8 *)string;
@@ -60,19 +72,10 @@ STRING_INFO * mtextout_line( u32 * buf, int bufwidth, int bufheight, const char 
 	
 	while( *str )
 	{
-		if( *str & 0x80 )
-		{
-			acode = str[0];
-			acode = (acode << 8) | str[1];
-			str += 2;
-		}
-		else
-		{
-			acode = *str;
-			str ++;
-		}
-			
-		ucode = xfont_nls_a2u( textout_nls, acode );
+	    int length;
+
+		length = xfont_nls_ansiex_to_unicode( textout_nls, str, &ucode );
+		str += length;
 		
 		xfont_udraw( textout_font, ucode, textout_size, textout_style, fontcolor, bgcolor, LCD_A8R8G8B8, (bgcolor>>24) ? XFONT_BLEND_MODE_ALPHA : XFONT_BLEND_MODE_COVER,
 			 x, y+textout_line_height, scr_width, 
@@ -106,7 +109,6 @@ STRING_INFO * mtextout16_line_colormode( u16 * buf, int bufwidth, int bufheight,
 	int scr_width, scr_height, font_width, font_height;
 	int limit;
 	u16 ucode;
-	u16 acode;
 	int x = min_x;
 	int y = min_y;
 	const u8 * str = (u8 *)string;
@@ -118,19 +120,10 @@ STRING_INFO * mtextout16_line_colormode( u16 * buf, int bufwidth, int bufheight,
 	
 	while( *str )
 	{
-		if( *str & 0x80 )
-		{
-			acode = str[0];
-			acode = (acode << 8) | str[1];
-			str += 2;
-		}
-		else
-		{
-			acode = *str;
-			str ++;
-		}
-			
-		ucode = xfont_nls_a2u( textout_nls, acode );
+		int length;
+
+		length = xfont_nls_ansiex_to_unicode( textout_nls, str, &ucode );
+		str += length;
 		
 		xfont_udraw( textout_font, ucode, textout_size, textout_style, fontcolor, bgcolor, color_mode, XFONT_BLEND_MODE_ALPHA,
 			 x, y+textout_line_height, scr_width, 
