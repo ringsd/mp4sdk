@@ -60,6 +60,15 @@ STRING_INFO* textoutW_line( const wchar_t *str, int min_x, int min_y, int max_x,
 STRING_INFO * mtextoutW_line( u32 * buf, int bufwidth, int bufheight, const wchar_t *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
 STRING_INFO * mtextoutW( u32 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
 
+STRING_INFO * mtextout16_line( u16 * buf, int bufwidth, int bufheight, const char *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
+STRING_INFO * mtextout16( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
+
+STRING_INFO * mtextoutW16_line( u16 * buf, int bufwidth, int bufheight, const wchar_t *string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
+STRING_INFO * mtextoutW16( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
+
+STRING_INFO * mtextout555( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
+STRING_INFO * mtextoutW555( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
+
 enum{
 	XFONT_STYLE_NORMAL   =  0x0,
 	XFONT_STYLE_BOLD     =  0x1,
@@ -80,8 +89,8 @@ void xfont_close( XFONT * xfont );
 void xfont_udraw( XFONT * xfont, int code, int size, int style, u32 color, u32 bgcolor, COLOR_MODE color_mode, XFONT_BLEND_MODE blending_mode,
  int startx, int starty, int pitch,
  void * buf, int * width, int * height, int limit );
- int xfont_getsize( XFONT * xfont, int code, int size, int style, XFONT_INFO * info );
- char * xfont_name( XFONT * xfont );
+int xfont_getsize( XFONT * xfont, int code, int size, int style, XFONT_INFO * info );
+const char * xfont_name( XFONT * xfont );
 
 //加载/卸载内置的cache系统
 int xfont_cache_init( void );
