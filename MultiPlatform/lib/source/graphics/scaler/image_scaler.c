@@ -83,5 +83,35 @@ int image_scaler_deinit( IMAGE_SCALER * iscaler )
     return 0;
 }
 
+static int image_readline( int line, void * buffer, MM_IMAGE * image )
+{
+    MM_image_readline( image, buffer, line );
+//    printf( "%d\n", line );
+    return 0;
+}
+
+int image_scaler_read( MM_IMAGE * image, u32 * dst, int dw, int dh )
+{
+    BITMAP_SCALER * bscaler;
+    int width, height;
+    int y;
+    
+    MM_image_size( image, &width, &height );
+    bscaler = bitmap_scaler_init( width, height, dw, dh, image_readline, image );
+    if( bscaler == NULL )
+        goto err1;
+    
+    for( y = 0; y < dh; y++ )
+    {
+        bitmap_scaler_readline( bscaler, dst, y );
+        dst += dw;
+    }
+    
+    bitmap_scaler_deinit( bscaler );
+    return 0;
+err1:
+    ERRLOG( "bitmap scaler init error.\n" );
+    return -1;
+}
 
 

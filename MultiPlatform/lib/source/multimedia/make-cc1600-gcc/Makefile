@@ -92,43 +92,8 @@ AR		=	arm-linux-ar rus
 # *************************************************************************
 # Files to be compiled
 # *************************************************************************
-SRC_IMAGER = color.c \
-             conv.c \
-             convert.c \
-             datatypes.c \
-             draw.c \
-             error.c \
-             feat.c \
-             fills.c \
-             filters.c \
-             font.c \
-             gaussian.c \
-             hlines.c \
-             image.c \
-             imexif.c \
-             imext.c \
-             img16.c \
-             imgdouble.c \
-             io.c \
-             iolayer.c \
-             jpeg.c \
-             limits.c \
-             log.c \
-             map.c \
-             maskimg.c \
-             MM_imager.c \
-             palimg.c \
-             pnm.c \
-             polygon.c \
-             quant.c \
-             raw.c \
-             regmach.c \
-             rgb.c \
-             rotate.c \
-             stackmach.c \
-             tags.c \
-             tga.c \
-             trans2.c \
+SRC_IMAGER =  MM_imager.c \
+             
 
 SRC_LIBJPEG = jcapimin.c \
               jcapistd.c \

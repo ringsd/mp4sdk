@@ -128,10 +128,6 @@ SOURCE=..\ico\msicon.c
 # PROP Default_Filter ""
 # Begin Source File
 
-SOURCE=..\bmp\bmp.c
-# End Source File
-# Begin Source File
-
 SOURCE=..\bmp\MM_bmp.c
 # End Source File
 # End Group
