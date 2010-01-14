@@ -9,8 +9,13 @@
 
 typedef enum { FDSEEK, FDNOSEEK, BUFFER, CBSEEK, CBNOSEEK, BUFCHAIN } io_type;
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
 typedef int ssize_t;
+#endif
+
+#ifdef __arm
+typedef int ssize_t;
+//typedef int off_t;
 #endif
 
 typedef struct i_io_glue_t i_io_glue_t;

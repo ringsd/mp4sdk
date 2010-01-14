@@ -67,7 +67,7 @@ MM_IMAGE_PNG *		MM_png_open	( u8 *path )
 	int is_png;
 	png_uint_32 width, height;
     int bit_depth, color_type, interlace_type, compression_type, filter_method, number_passes;
-    MM_IMAGE_PNG * image;
+    MM_IMAGE_PNG * image = NULL;
 	
 	FILE *fp = fopen(path, "rb");
     if (!fp)
@@ -183,6 +183,7 @@ MM_IMAGE_PNG *		MM_png_open	( u8 *path )
 		free( buf );
 	}
 	*/
+		
 	return image;
 	
 err:
@@ -211,9 +212,12 @@ int			MM_png_write	( MM_IMAGE_PNG * image, void *buf, int width, int height )
 
 void		MM_png_close	( MM_IMAGE_PNG * image )
 {
+    if (setjmp(png_jmpbuf(image->png_ptr)))
+		goto err;
 	if( image->bitmap )
 		free( image->bitmap );
 	png_read_end(image->png_ptr, image->info_ptr);
+err:
     png_destroy_read_struct(&image->png_ptr, &image->info_ptr, (png_infopp)NULL);
     fclose( image->fp );
 }
@@ -232,6 +236,10 @@ err:
 int 		MM_png_readline	( MM_IMAGE_PNG * image, void *buf, int scanline )
 {
 	int pass = image->number_passes;
+	
+	if (setjmp(png_jmpbuf(image->png_ptr)))
+		goto err;
+		
 	/*
 	if( pass <= 1 )
 	{
@@ -310,5 +318,7 @@ int 		MM_png_readline	( MM_IMAGE_PNG * image, void *buf, int scanline )
 	}
 	
 	return 0;
+err:
+    return -1;
 }
 

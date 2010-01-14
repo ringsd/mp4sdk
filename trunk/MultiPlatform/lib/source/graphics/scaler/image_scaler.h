@@ -26,6 +26,8 @@ int image_scaler_readline( IMAGE_SCALER * iscaler, void * buf, int scanline );
 
 int image_scaler_deinit( IMAGE_SCALER * iscaler );
 
+int image_scaler_read( MM_IMAGE * image, u32 * dst, int width, int height );
+
 #ifdef __cplusplus
 }
 #endif

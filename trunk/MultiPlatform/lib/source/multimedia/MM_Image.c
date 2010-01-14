@@ -43,10 +43,10 @@ static int 		Disable	( void )
 
 MM_IMAGE image_types[] = {
 //		handle		open			read		write			close			size			readline		random		extname
-	{	NULL,	MM_bmp_open,	MM_bmp_read,	NULL,			MM_bmp_close,	MM_bmp_size,	MM_bmp_readline,	Enable,		"bmp"	},
-	{	NULL,	MM_ico_open,	MM_ico_read,	NULL,			MM_ico_close,	NULL,			NULL,				Disable,	"ico"	},	
-	{	NULL,	MM_jpg_open,	MM_jpg_read,	MM_jpg_write,	MM_jpg_close,	MM_jpg_size,	MM_jpg_readline,	Disable,	"jpg"	},	
-	{	NULL,	MM_png_open,	MM_png_read,	MM_png_write,	MM_png_close,	MM_png_size,	MM_png_readline,	Disable,	"png"	},	
+	{	NULL,	MM_bmp_open,	NULL,	NULL,			MM_bmp_close,	MM_bmp_size,	MM_bmp_readline,	Enable,		"bmp"	},
+	{	NULL,	MM_ico_open,	NULL,	NULL,			MM_ico_close,	NULL,			NULL,				Disable,	"ico"	},	
+	{	NULL,	MM_jpg_open,	NULL,	MM_jpg_write,	MM_jpg_close,	MM_jpg_size,	MM_jpg_readline,	Disable,	"jpg"	},	
+	{	NULL,	MM_png_open,	NULL,	MM_png_write,	MM_png_close,	MM_png_size,	MM_png_readline,	Disable,	"png"	},	
 	{	NULL,	NULL,			NULL,			NULL,			NULL,			NULL,				NULL,		NULL	},//END Block
 };
 
@@ -94,7 +94,9 @@ MM_IMAGE *		MM_image_open	( const u8 *path )
 int			MM_image_read	( MM_IMAGE * image, void *buf, int width, int height )
 {
 	if( image->MM_image_read == NULL )
-		return -1;
+	{
+	    return image_scaler_read( image, buf, width, height );
+    }
 	return image->MM_image_read( image->image_spec, buf, width, height );
 }
 
