@@ -56,6 +56,24 @@ u32 convert_key( u32 phykey , KEYMAP* key_map )
 	return emukey;
 }
 
+u32 reconvert_key( u32 emukey , KEYMAP* key_map )
+{
+	int phykey = 0;
+	int i = 0;
+	while( key_map[i].phykey || key_map[i].emukey )
+	{
+		if( key_map[i].emukey )
+		{
+			if( (emukey & key_map[i].emukey) == key_map[i].emukey )
+			{
+				phykey |= key_map[i].phykey;
+			}
+		}
+		i++;
+	}
+	return phykey;
+}
+
 KEYNAME syskeyname[] = {
 {	"SYSKEY_UP"	,			SYSKEY_UP				},
 {	"SYSKEY_DOWN"	,		SYSKEY_DOWN		  },
