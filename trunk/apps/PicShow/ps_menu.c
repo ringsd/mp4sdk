@@ -382,9 +382,10 @@ ERRCODE RootCallBack( struct XGUI_WND * hWnd , XGUI_MSG * msg )
 	return ERRCODE_NONE;
 }
 
+PICSHOW_MENU_HANDLE * hMenu;
+
 MENU_CMD PicShow_Menu( void )
 {
-	PICSHOW_MENU_HANDLE * hMenu;
 	menu_cmd = MENU_CMD_NORMAL;
 	XGUI_Init( RootCallBack );
 	TRACE_LOG("");
