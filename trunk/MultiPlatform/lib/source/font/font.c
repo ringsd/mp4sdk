@@ -155,9 +155,8 @@ const char * xfont_name( XFONT * xfont )
 void xfont_close( XFONT * xfont )
 {
 	xfont->xfont_close( xfont->handle );
+	free( xfont );
 }
-
-
 
 #define MAX_WIDTH 256
 #define MAX_HEIGHT 256
