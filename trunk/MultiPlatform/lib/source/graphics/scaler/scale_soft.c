@@ -47,18 +47,22 @@
 
 /* RGB32格式的源图取色
  */
+#define rgb32_A00 ((src[0]&0xFF000000)>>24) 
 #define rgb32_R00 ((src[0]&0xFF0000)>>16)       
 #define rgb32_G00 ((src[0]&0xFF00)>>8)    
 #define rgb32_B00 ((src[0]&0xFF))
                                     
+#define rgb32_A01 ((src[1]&0xFF000000)>>24) 
 #define rgb32_R01 ((src[1]&0xFF0000)>>16)   
 #define rgb32_G01 ((src[1]&0xFF00)>>8)    
 #define rgb32_B01 ((src[1]&0xFF))      
-                                    
+
+#define rgb32_A10 ((src[sw]&0xFF000000)>>24)                             
 #define rgb32_R10 ((src[sw]&0xFF0000)>>16)  
 #define rgb32_G10 ((src[sw]&0xFF00)>>8)   
 #define rgb32_B10 ((src[sw]&0xFF))        
-                                    
+        
+#define rgb32_A11 ((src[sw+1]&0xFF000000)>>24)                                
 #define rgb32_R11 ((src[sw+1]&0xFF0000)>>16)
 #define rgb32_G11 ((src[sw+1]&0xFF00)>>8)
 #define rgb32_B11 ((src[sw+1]&0xFF))
@@ -66,7 +70,7 @@
 /* 颜色生成 */
 #define rgb565_make() ((*dst) = (((r&0xF8)<<8) | ((g&0xFC)<<3) | ((b&0xF8)>>3)))
 
-#define rgb32_make() (*dst = ((r << 16) | (g << 8) | b))
+#define rgb32_make() (*dst = ((a << 24) | (r << 16) | (g << 8) | b))
 
 #define yuv422_make()											\
 {                                                                \
@@ -137,6 +141,7 @@ void STYPE##_##DTYPE##_scale_line											\
 		int r = MAKE_CHANNEL_SW(STYPE##_R00, STYPE##_R01, STYPE##_R10, STYPE##_R11);    \
 		int g = MAKE_CHANNEL_SW(STYPE##_G00, STYPE##_G01, STYPE##_G10, STYPE##_G11);    \
 		int b = MAKE_CHANNEL_SW(STYPE##_B00, STYPE##_B01, STYPE##_B10, STYPE##_B11);    \
+		int a = MAKE_CHANNEL_SW(STYPE##_A00, STYPE##_A01, STYPE##_A10, STYPE##_A11);    \
 		                                                                        \
 		DTYPE##_make();															\
 		DTYPE##_normal_movedst();												\
@@ -174,6 +179,7 @@ void STYPE##_##DTYPE##_blowup_line( DTYPE##_dparam, STYPE##_type * src, int sw, 
 		int r = MAKE_CHANNEL_DW(STYPE##_R00, STYPE##_R01, STYPE##_R10, STYPE##_R11);    \
 		int g = MAKE_CHANNEL_DW(STYPE##_G00, STYPE##_G01, STYPE##_G10, STYPE##_G11);    \
 		int b = MAKE_CHANNEL_DW(STYPE##_B00, STYPE##_B01, STYPE##_B10, STYPE##_B11);    \
+		int a = MAKE_CHANNEL_DW(STYPE##_A00, STYPE##_A01, STYPE##_A10, STYPE##_A11);    \
 		DTYPE##_make();                                                               \
 		DTYPE##_normal_movedst();                                               \
 		h_weight -= sw;                                                               \
