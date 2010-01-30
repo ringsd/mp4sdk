@@ -31,8 +31,8 @@
 				Name="VCCustomBuildTool"
 				Description="copy $(TargetPath)"
 				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
-				AdditionalDependencies=""
-				Outputs="..\..\..\vc2005\$(TargetName) "
+				AdditionalDependencies="$(TargetPath)"
+				Outputs="..\..\..\vc2005\$(TargetFileName)"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
@@ -110,8 +110,8 @@
 				Name="VCCustomBuildTool"
 				Description="copy $(TargetPath)"
 				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
-				AdditionalDependencies=""
-				Outputs="..\..\..\vc2005\$(TargetName)  "
+				AdditionalDependencies="$(TargetPath)"
+				Outputs="..\..\..\vc2005\$(TargetFileName)"
 			/>
 			<Tool
 				Name="VCXMLDataGeneratorTool"
