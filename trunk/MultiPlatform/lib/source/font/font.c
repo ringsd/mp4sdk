@@ -360,13 +360,13 @@ static void xfont_udraw_rgb888
 			else if( gray > 0 )
 			{
 				register int mask = 0xFF;
-				u32 r = (	( data ) * ( gray_bg ) + 
+				u32 r = (	( data & (mask<<16) ) * ( gray_bg ) + 
 								( fc_r * gray ) ) & (mask<<24);
 				u32 g = (	( data & (mask<<8) ) * ( gray_bg ) + 
 								( fc_g * gray ) ) & (mask<<16);
 				u32 b = (	( data & mask )	* ( gray_bg ) + 
 								( fc_b * gray ) );
-				*dst = (r | g | b)>>8;
+				*dst = ((r | g | b)>>8) | (mask & (mask<<24));
 			}
 			src++;
 			dst++;
