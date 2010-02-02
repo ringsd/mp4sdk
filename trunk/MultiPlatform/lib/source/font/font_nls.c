@@ -236,7 +236,8 @@ static void build_u2a_table( XFONT_NLS * hnls )
 	for( i = 0; i < max_count; i++ )
 	{
 		int dat = i+max_count;
-		hnls->u2a_table[hnls->nls_table[i]] = ((dat>>8)&0xFF)|((dat<<8)&0xFF00);
+		if( hnls->u2a_table[hnls->nls_table[i]] == 0xFFFF )
+		    hnls->u2a_table[hnls->nls_table[i]] = ((dat>>8)&0xFF)|((dat<<8)&0xFF00);
 	}
 }
 
