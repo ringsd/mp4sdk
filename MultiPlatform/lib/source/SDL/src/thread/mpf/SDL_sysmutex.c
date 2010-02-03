@@ -69,7 +69,7 @@ int SDL_mutexV(SDL_mutex *mutex)
 {
 
 	mutex->state=0;
-      sys_delay(20);	
+ //   sys_delay(10);	
 
 	return 0;
 
