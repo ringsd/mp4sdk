@@ -84,10 +84,10 @@ static char * strlwc(const char * s)
   (not re-entrant).
  */
 /*--------------------------------------------------------------------------*/
-static char * strstrip(char * s)
+static char * strstrip(unsigned char * s)
 {
-    static char l[ASCIILINESZ+1];
-	char * last ;
+    static unsigned char l[ASCIILINESZ+1];
+	unsigned char * last ;
 	
     if (s==NULL) return NULL ;
     
