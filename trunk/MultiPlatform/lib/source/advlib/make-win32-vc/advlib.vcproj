@@ -31,7 +31,7 @@
 				Name="VCCustomBuildTool"
 				Description="正在执行自定义生成步骤"
 				CommandLine="copy        $(TargetPath)        ..\..\..\vc2005\&#x0D;&#x0A;"
-				AdditionalDependencies=""
+				AdditionalDependencies="$(TargetPath)"
 				Outputs="..\..\..\vc2005\$(TargetFileName)"
 			/>
 			<Tool
