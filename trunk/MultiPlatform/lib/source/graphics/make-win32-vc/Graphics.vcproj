@@ -30,7 +30,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				CommandLine="copy $(TargetPath) ..\..\..\..\lib\vc2005&#x0D;&#x0A;copy ..\2D\GA_2d.h ..\..\..\..\inc&#x0D;&#x0A;"
-				AdditionalDependencies=" "
+				AdditionalDependencies="$(TargetPath)"
 				Outputs="..\..\..\..\lib\vc2005\$(TargetFileName)"
 			/>
 			<Tool
@@ -108,7 +108,7 @@
 			<Tool
 				Name="VCCustomBuildTool"
 				CommandLine="copy $(TargetPath) ..\..\..\..\lib\vc2005&#x0D;&#x0A;copy ..\2D\GA_2d.h ..\..\..\..\inc&#x0D;&#x0A;"
-				AdditionalDependencies=""
+				AdditionalDependencies="$(TargetPath)"
 				Outputs="..\..\..\..\lib\vc2005\$(TargetFileName)"
 			/>
 			<Tool
