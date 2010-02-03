@@ -153,10 +153,10 @@ all : $(IMAGE_LIB)
 $(IMAGE_LIB) : $(OBJ) $(OBJ_MXU)
 	$(AR) $(TARGET).a $(OBJ) $(OBJ_MXU)
 
-$(OBJ_C) : %.o : %.c %.dc
+$(OBJ_C) : %.o : %.c
 	$(CC) $(CC_OPTS) -o $@ $<
 
-$(OBJ_CPP) : %.o : %.cpp %.dcpp
+$(OBJ_CPP) : %.o : %.cpp
 	$(CPP) $(CPP_OPTS) -o $@ $<
 
 $(OBJ_S) : %.o : %.S

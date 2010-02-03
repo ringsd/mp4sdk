@@ -152,25 +152,15 @@ all : $(IMAGE_LIB)
 $(IMAGE_LIB) : $(OBJ) $(OBJ_MXU)
 	$(AR) $(TARGET).a $(OBJ) $(OBJ_MXU)
 
-$(OBJ_C) : %.o : %.c %.dc
+$(OBJ_C) : %.o : %.c
 	$(CC) $(CC_OPTS) -o $@ $<
 
-$(OBJ_CPP) : %.o : %.cpp %.dcpp
+$(OBJ_CPP) : %.o : %.cpp
 	$(CPP) $(CPP_OPTS) -o $@ $<
 
 $(OBJ_S) : %.o : %.S
 	$(MXU) $< > $@.S
 	$(CC) $(CC_OPTS_A) -o $@ $@.S
-
-%.dc: %.c
-	$(CC) -M $(CC_OPTS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
-
-%.dcpp: %.c
-	$(CC) -M $(CPP_OPTS) $< > $@.$$$$; \
-	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
-	rm -f $@.$$$$
 
 .PHONY : clean depend
 
