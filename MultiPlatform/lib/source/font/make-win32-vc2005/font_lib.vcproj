@@ -29,9 +29,9 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="copy $(TargetPath)"
+				Description="Update Lib"
 				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
-				AdditionalDependencies="$(TargetPath)"
+				AdditionalDependencies="$(TargetPath) "
 				Outputs="..\..\..\vc2005\$(TargetFileName)"
 			/>
 			<Tool
@@ -108,7 +108,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				Description="copy $(TargetPath)"
+				Description="Update Lib"
 				CommandLine="copy $(TargetPath) ..\..\..\vc2005&#x0D;&#x0A;"
 				AdditionalDependencies="$(TargetPath)"
 				Outputs="..\..\..\vc2005\$(TargetFileName)"
