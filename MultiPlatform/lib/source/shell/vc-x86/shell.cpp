@@ -1,6 +1,6 @@
 // shell.cpp : Defines the entry point for the application.
 //
-
+#include <vld.h>
 #include "stdafx.h"
 #include "resource.h"
 #include "MMSYSTEM.H"
@@ -242,290 +242,24 @@ u32 kbd_get_key( void )
 	return key;
 }
 
-u16 keymap[256]={
-0,// VK_NONE		        0x00
-0,// VK_LBUTTON        0x01
-0,// VK_RBUTTON        0x02
-0,// VK_CANCEL         0x03
-0,// VK_MBUTTON        0x04    /* NOT contiguous with L & RBUTTON */
-0,// VK_XBUTTON1       0x05    /* NOT contiguous with L & RBUTTON */
-0,// VK_XBUTTON2       0x06    /* NOT contiguous with L & RBUTTON */
-0,// VK_NONE		        0x07
-KSYM_BACKSPACE,// VK_BACK           0x08
-0,// VK_TAB            0x09
-0,// VK_NONE           0x0A
-0,// VK_NONE           0x0B
-0,// VK_CLEAR          0x0C
-KSYM_RETURN,// VK_RETURN         0x0D
-0,// VK_NONE		        0x0E
-0,// VK_NONE		        0x0F
-0,// VK_SHIFT          0x10
-0,// VK_CONTROL        0x11
-0,// VK_MENU           0x12
-0,// VK_PAUSE          0x13
-0,// VK_CAPITAL        0x14
-0,// VK_HANGUL         0x15
-0,// VK_NONE           0x16
-0,// VK_JUNJA          0x17
-0,// VK_FINAL          0x18
-0,// VK_HANJA          0x19
-0,// VK_KANJI          0x1A
-KSYM_ESCAPE,// VK_ESCAPE         0x1B
-0,// VK_CONVERT        0x1C
-0,// VK_NONCONVERT     0x1D
-0,// VK_ACCEPT         0x1E
-0,// VK_MODECHANGE     0x1F
-KSYM_SPACE,// VK_SPACE          0x20
-0,// VK_PRIOR          0x21
-0,// VK_NEXT           0x22
-0,// VK_END            0x23
-0,// VK_HOME           0x24
-KSYM_LEFT,// VK_LEFT           0x25
-KSYM_UP,// VK_UP             0x26
-KSYM_RIGHT,// VK_RIGHT          0x27
-KSYM_DOWN,// VK_DOWN           0x28
-0,// VK_SELECT         0x29
-0,// VK_PRINT          0x2A
-0,// VK_EXECUTE        0x2B
-0,// VK_SNAPSHOT       0x2C
-0,// VK_INSERT         0x2D
-0,// VK_DELETE         0x2E
-0,// VK_HELP           0x2F
-KSYM_0,// VK_NONE						0x30
-KSYM_1,// VK_NONE           0x31
-KSYM_2,// VK_NONE           0x32
-KSYM_3,// VK_NONE           0x33
-KSYM_4,// VK_NONE           0x34
-KSYM_5,// VK_NONE           0x35
-KSYM_6,// VK_NONE           0x36
-KSYM_7,// VK_NONE           0x37
-KSYM_8,// VK_NONE           0x38
-KSYM_9,// VK_NONE           0x39
-0,// VK_NONE           0x3A
-0,// VK_NONE           0x3B
-0,// VK_NONE           0x3C
-0,// VK_NONE           0x3D
-0,// VK_NONE           0x3E
-0,// VK_NONE           0x3F
-0,// VK_NONE						0x40
-KSYM_a,// VK_NONE           0x41
-KSYM_b,// VK_NONE           0x42
-KSYM_c,// VK_NONE           0x43
-KSYM_d,// VK_NONE           0x44
-KSYM_e,// VK_NONE           0x45
-KSYM_f,// VK_NONE           0x46
-KSYM_g,// VK_NONE           0x47
-KSYM_h,// VK_NONE           0x48
-KSYM_i,// VK_NONE           0x49
-KSYM_j,// VK_NONE           0x4A
-KSYM_k,// VK_NONE           0x4B
-KSYM_l,// VK_NONE           0x4C
-KSYM_m,// VK_NONE           0x4D
-KSYM_n,// VK_NONE           0x4E
-KSYM_o,// VK_NONE           0x4F
-KSYM_p,// VK_NONE						0x50
-KSYM_q,// VK_NONE           0x51
-KSYM_r,// VK_NONE           0x52
-KSYM_s,// VK_NONE           0x53
-KSYM_t,// VK_NONE           0x54
-KSYM_u,// VK_NONE           0x55
-KSYM_v,// VK_NONE           0x56
-KSYM_w,// VK_NONE           0x57
-KSYM_x,// VK_NONE           0x58
-KSYM_y,// VK_NONE           0x59
-KSYM_z,// VK_NONE           0x5A
-0,// VK_LWIN           0x5B
-0,// VK_RWIN           0x5C
-0,// VK_APPS           0x5D
-0,// VK_NONE           0x5E
-0,// VK_SLEEP          0x5F
-0,// VK_NUMPAD0        0x60
-0,// VK_NUMPAD1        0x61
-0,// VK_NUMPAD2        0x62
-0,// VK_NUMPAD3        0x63
-0,// VK_NUMPAD4        0x64
-0,// VK_NUMPAD5        0x65
-0,// VK_NUMPAD6        0x66
-0,// VK_NUMPAD7        0x67
-0,// VK_NUMPAD8        0x68
-0,// VK_NUMPAD9        0x69
-0,// VK_MULTIPLY       0x6A
-0,// VK_ADD            0x6B
-0,// VK_SEPARATOR      0x6C
-0,// VK_SUBTRACT       0x6D
-0,// VK_DECIMAL        0x6E
-0,// VK_DIVIDE         0x6F
-0,// VK_F1             0x70
-0,// VK_F2             0x71
-0,// VK_F3             0x72
-0,// VK_F4             0x73
-0,// VK_F5             0x74
-0,// VK_F6             0x75
-0,// VK_F7             0x76
-0,// VK_F8             0x77
-0,// VK_F9             0x78
-0,// VK_F10            0x79
-0,// VK_F11            0x7A
-0,// VK_F12            0x7B
-0,// VK_F13            0x7C
-0,// VK_F14            0x7D
-0,// VK_F15            0x7E
-0,// VK_F16            0x7F
-0,// VK_F17            0x80
-0,// VK_F18            0x81
-0,// VK_F19            0x82
-0,// VK_F20            0x83
-0,// VK_F21            0x84
-0,// VK_F22            0x85
-0,// VK_F23            0x86
-0,// VK_F24            0x87
-0,// VK_NONE           0x88
-0,// VK_NONE           0x89
-0,// VK_NONE           0x8A
-0,// VK_NONE           0x8B
-0,// VK_NONE           0x8C
-0,// VK_NONE           0x8D
-0,// VK_NONE           0x8E
-0,// VK_NONE           0x8F
-0,// VK_NUMLOCK        0x90
-0,// VK_SCROLL         0x91
-0,// VK_OEM_NEC_EQUAL  0x92   // '=' key on numpad#define VK_OEM_FJ_JISHO   0x92   // 'Dictionary' key
-0,// VK_OEM_FJ_MASSHOU 0x93   // 'Unregister word' key
-0,// VK_OEM_FJ_TOUROKU 0x94   // 'Register word' key
-0,// VK_OEM_FJ_LOYA    0x95   // 'Left OYAYUBI' key
-0,// VK_OEM_FJ_ROYA    0x96   // 'Right OYAYUBI' key
-0,// VK_NONE           0x97
-0,// VK_NONE           0x98
-0,// VK_NONE           0x99
-0,// VK_NONE           0x9A
-0,// VK_NONE           0x9B
-0,// VK_NONE           0x9C
-0,// VK_NONE           0x9D
-0,// VK_NONE           0x9E
-0,// VK_NONE           0x9F
-KSYM_LSHIFT,// VK_LSHIFT         0xA0
-KSYM_RSHIFT,// VK_RSHIFT         0xA1
-0,// VK_LCONTROL       0xA2
-0,// VK_RCONTROL       0xA3
-0,// VK_LMENU          0xA4
-0,// VK_RMENU          0xA5
-0,// VK_BROWSER_BACK        0xA6
-0,// VK_BROWSER_FORWARD     0xA7
-0,// VK_BROWSER_REFRESH     0xA8
-0,// VK_BROWSER_STOP        0xA9
-0,// VK_BROWSER_SEARCH      0xAA
-0,// VK_BROWSER_FAVORITES   0xAB
-0,// VK_BROWSER_HOME        0xAC
-0,// VK_VOLUME_MUTE         0xAD
-0,// VK_VOLUME_DOWN         0xAE
-0,// VK_VOLUME_UP           0xAF
-0,// VK_MEDIA_NEXT_TRACK    0xB0
-0,// VK_MEDIA_PREV_TRACK    0xB1
-0,// VK_MEDIA_STOP          0xB2
-0,// VK_MEDIA_PLAY_PAUSE    0xB3
-0,// VK_LAUNCH_MAIL         0xB4
-0,// VK_LAUNCH_MEDIA_SELECT 0xB5
-0,// VK_LAUNCH_APP1         0xB6
-0,// VK_LAUNCH_APP2         0xB7
-0,// VK_NONE				         0xB8
-0,// VK_NONE				         0xB9
-KSYM_SEMICOLON,// VK_OEM_1          0xBA   // ';:' for US
-0,// VK_OEM_PLUS       0xBB   // '+' any country
-0,// VK_OEM_COMMA      0xBC   // ',' any country
-0,// VK_OEM_MINUS      0xBD   // '-' any country
-0,// VK_OEM_PERIOD     0xBE   // '.' any country
-0,// VK_OEM_2          0xBF   // '/?' for US
-0,// VK_OEM_3          0xC0   // '`~' for US
-0,// VK_NONE           0xC1
-0,// VK_NONE           0xC2
-0,// VK_NONE           0xC3
-0,// VK_NONE           0xC4
-0,// VK_NONE           0xC5
-0,// VK_NONE           0xC6
-0,// VK_NONE           0xC7
-0,// VK_NONE           0xC8
-0,// VK_NONE           0xC9
-0,// VK_NONE           0xCA
-0,// VK_NONE           0xCB
-0,// VK_NONE           0xCC
-0,// VK_NONE           0xCD
-0,// VK_NONE           0xCE
-0,// VK_NONE           0xCF
-0,// VK_NONE						0xD0
-0,// VK_NONE           0xD1
-0,// VK_NONE           0xD2
-0,// VK_NONE           0xD3
-0,// VK_NONE           0xD4
-0,// VK_NONE           0xD5
-0,// VK_NONE           0xD6
-0,// VK_NONE           0xD7
-0,// VK_NONE           0xD8
-0,// VK_NONE           0xD9
-0,// VK_NONE           0xDA
-0,// VK_OEM_4          0xDB  //  '[{' for US
-0,// VK_OEM_5          0xDC  //  '\|' for US
-0,// VK_OEM_6          0xDD  //  ']}' for US
-0,// VK_OEM_7          0xDE  //  ''"' for US
-0,// VK_OEM_8          0xDF
-0,// VK_NONE          	0xE0
-0,// VK_OEM_AX         0xE1  //  'AX' key on Japanese AX kbd
-0,// VK_OEM_102        0xE2  //  "<>" or "\|" on RT 102-key kbd.
-0,// VK_ICO_HELP       0xE3  //  Help key on ICO
-0,// VK_ICO_00         0xE4  //  00 key on ICO
-0,// VK_PROCESSKEY     0xE5
-0,// VK_ICO_CLEAR      0xE6
-0,// VK_PACKET         0xE7
-0,// VK_NONE           0xE8
-0,// VK_OEM_RESET      0xE9
-0,// VK_OEM_JUMP       0xEA
-0,// VK_OEM_PA1        0xEB
-0,// VK_OEM_PA2        0xEC
-0,// VK_OEM_PA3        0xED
-0,// VK_OEM_WSCTRL     0xEE
-0,// VK_OEM_CUSEL      0xEF
-0,// VK_OEM_ATTN       0xF0
-0,// VK_OEM_FINISH     0xF1
-0,// VK_OEM_COPY       0xF2
-0,// VK_OEM_AUTO       0xF3
-0,// VK_OEM_ENLW       0xF4
-0,// VK_OEM_BACKTAB    0xF5
-0,// VK_ATTN           0xF6
-0,// VK_CRSEL          0xF7
-0,// VK_EXSEL          0xF8
-0,// VK_EREOF          0xF9
-0,// VK_PLAY           0xFA
-0,// VK_ZOOM           0xFB
-0,// VK_NONAME         0xFC
-0,// VK_PA1            0xFD
-0,// VK_OEM_CLEAR      0xFE
-0,// VK_OEM_CLEAR      0xFF
-};
+#include "platform_keyboard.h"
 
-BYTE keydata[256];
-//返回一串以0结束的按键码(每个码表示对应的按键被按下)
-u16 *sys_key_state( void )
+int sys_get_keyboard( SYSVK * vkeys, int length )
 {
-	static u16 vkey[256];
-	int i = 0, j = 0;
-	//if( GetKeyboardState(keydata) != 0 )	//获取按键状态
-	{
-	for( i = 0; i < 256; i++ )
-	{
-	//if( i >= '0' && i < '9' )
-	//	printf( "%d ",keydata[i] );
-		if( (keydata[i] & 0x80) /*&& keymap[i]*/ )
-		{
-			//printf( "%x ",i );
-			vkey[j] = keymap[i];
-			j++;
-		}
-	}
-	//printf( "\n" );
-	}
-	vkey[j] = 0;
-	return vkey;
+    int i;
+    for( i = 0; i < length; i++ )
+    {
+        if( KEY_DOWN(i) )
+        {
+            vkeys[i] = SYSVK_PRESS_MAX;
+        }
+        else
+        {
+            vkeys[i] = 0;
+        }
+    }
+    return 0;
 }
-
 
 u32 get_ticks_count( void )
 {
@@ -852,6 +586,7 @@ static DWORD WINAPI SysThreadEntry(
 {
 	SYS_THREAD * pThread = (SYS_THREAD *)lpParameter;
 	pThread->sys_thread_proc( pThread->param, pThread );
+	free( pThread );
 	return 0;
 }
 
@@ -1149,7 +884,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	TCHAR szHello[MAX_LOADSTRING];
 	LoadString(hInst, IDS_HELLO, szHello, MAX_LOADSTRING);
 	Main_hWnd = hWnd;
-	GetKeyboardState(keydata);
+
 	switch (message) 
 	{
 		case WM_LBUTTONDOWN:
@@ -1193,37 +928,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			cy=HIWORD(lParam);
 			break;
 		case WM_PAINT:
-			/*
-			hdc = BeginPaint(hWnd, &ps);
-			u16 *src;
-			src = (u16 *)get_video();
-			u32 i;
-			for(i=0;i<320*240*4;i+=4)
-			{
-				u16 color = *src;
-				ScreenBuffer[i] = (color << 3) & 0xFF ;
-				ScreenBuffer[i+1] = (color >> 2) & 0xFF ;
-				ScreenBuffer[i+2] = (color >> 8) & 0xFF ;
-				ScreenBuffer[i+3] = 0 ;
-				src ++;
-			}
-			SetBitmapBits(hScreenBuffer,320*240*4,ScreenBuffer);
-			StretchBlt(hdc,0,0,cx,cy,hdcMem,0,0,320,240,SRCCOPY);
-			EndPaint(hWnd, &ps);*/
 			if(Update_ClientRect) Update_ClientRect();
 			break;
-		/*
-		case WM_TIMER:
-			switch (wParam)
-			{
-				case 1:
-				RECT rt;
-				GetClientRect(hWnd, &rt);
-				InvalidateRect(hWnd,&rt,FALSE);
-				break;
-			}
-			break;
-		*/
 		case MM_WOM_DONE:
 			printf("MM_WOM_DONE\n");
 			break;

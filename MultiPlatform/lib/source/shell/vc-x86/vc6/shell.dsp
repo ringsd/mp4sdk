@@ -56,7 +56,7 @@ InputPath=.\Release\shell.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy           $(InputPath)           ..\..\..\..\vc-x86\ 
+	copy            $(InputPath)            ..\..\..\..\vc-x86\ 
 
 # End Custom Build
 
@@ -88,7 +88,7 @@ InputPath=.\Debug\shell.lib
 SOURCE="$(InputPath)"
 
 "no" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	copy           $(InputPath)           ..\..\..\..\vc-x86\ 
+	copy            $(InputPath)            ..\..\..\..\vc-x86\ 
 
 # End Custom Build
 
@@ -144,10 +144,6 @@ SOURCE=..\system.c
 # Begin Source File
 
 SOURCE=..\types.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\vc2005_fix.cpp
 # End Source File
 # Begin Source File
 
