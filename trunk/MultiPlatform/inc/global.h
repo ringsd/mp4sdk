@@ -27,6 +27,7 @@ extern "C" {
 
 //my platfarm libs
 #include <system.h>
+#include <platform_keyboard.h>
 #include <platform_font.h>
 #include <joypad.h>
 #include <miniio.h>
