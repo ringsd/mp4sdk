@@ -432,7 +432,10 @@ u32 gbc_sound_master_volume;
   }                                                                           \
 
 void synchronize_sound()
-{
+{ 
+  if (!global_enable_audio)
+		return;
+	
   SDL_LockMutex(sound_mutex);
 
   gbc_sound_synchronize();
@@ -456,6 +459,10 @@ void update_gbc_sound(u32 cpu_ticks)
   s8 *sample_data;
   s8 *wave_bank;
   u8 *wave_ram = ((u8 *)io_registers) + 0x90;
+	
+  if (!global_enable_audio)
+		return;
+
 
   gbc_sound_partial_ticks += fp16_16_fractional_part(buffer_ticks);
   buffer_ticks = fp16_16_to_u32(buffer_ticks);
@@ -713,6 +720,10 @@ void reset_sound()
   direct_sound_struct *ds = direct_sound_channel;
   gbc_sound_struct *gs = gbc_sound_channel;
   u32 i;
+	
+  if (!global_enable_audio)
+		return;
+
 
   sound_on = 0;
   sound_buffer_base = 0;
@@ -749,6 +760,9 @@ void reset_sound()
 
 void sound_exit()
 {
+  if (!global_enable_audio)
+		return;
+
   gbc_sound_buffer_index =
    (sound_buffer_base + audio_buffer_size) % BUFFER_SIZE;
   SDL_PauseAudio(1);
@@ -777,6 +791,10 @@ void init_sound()
     sound_callback,
     NULL
   };
+	
+  if (!global_enable_audio)
+		return;
+
 
   gbc_sound_tick_step =
    float_to_fp16_16(256.0 / sound_frequency);

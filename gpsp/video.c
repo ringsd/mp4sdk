@@ -87,7 +87,7 @@ static void Ge_Finish_Callback(int id, void *arg)
 
 #else
 
-SDL_Surface *screen;
+SDL_Surface *screen = NULL;
 const u32 video_scale = 1;
 
 #define get_screen_pixels()                                                 \
@@ -3234,6 +3234,9 @@ u32 resolution_width, resolution_height;
 
 void update_scanline()
 {
+	if (!screen)
+		return;
+	
   u32 pitch = get_screen_pitch();
   u32 dispcnt = io_registers[REG_DISPCNT];
   u32 display_flags = (dispcnt >> 8) & 0x1F;
@@ -3358,6 +3361,9 @@ void flip_screen()
 
 void flip_screen()
 {
+  if (!screen)
+	  return;
+	
   if((video_scale != 1) && (current_scale != unscaled))
   {
     s32 x, y;
@@ -3404,11 +3410,14 @@ u32 frame_to_render;
 
 void update_screen()
 {
-  if(!skip_next_frame)
 #ifdef ZAURUS
+  if (!screen)
+		return;
+  if(!skip_next_frame)
     SDL_UpdateRect(screen, 40, 40, 240, 160);
 #else
-    flip_screen();
+	if(!skip_next_frame)
+		flip_screen();
 #endif
 }
 
@@ -3504,7 +3513,12 @@ void init_video()
 void init_video()
 {
 #ifdef ZAURUS
-  SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK);
+  if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_JOYSTICK) < 0)
+  {
+	  printf("Failed to initialize SDL !!\n");
+	  return; // for debug
+//	  exit(1);
+  }
   //screen = SDL_SetVideoMode(320, 240, 16, SDL_FULLSCREEN);
   screen = SDL_SetVideoMode(320, 240, 16, 0);
 #else
@@ -3714,7 +3728,7 @@ u16 *copy_screen()
 }
 
 void blit_to_screen(u16 *src, u32 w, u32 h, u32 dest_x, u32 dest_y)
-{
+{	
   u32 pitch = get_screen_pitch();
 #ifdef ZAURUS
   u16 *dest_ptr = get_screen_pixels();

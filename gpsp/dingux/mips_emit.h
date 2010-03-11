@@ -167,6 +167,11 @@ typedef enum
   mips_opcode_sw         = 0x2B,
 } mips_opcode;
 
+#define mips_debug_break(cause) \
+  printf("break!! line : %s\n",cause);	\
+  __asm__("break 0")
+
+
 #define mips_emit_reg(opcode, rs, rt, rd, shift, function)                    \
   *((u32 *)translation_ptr) = (mips_opcode_##opcode << 26) |                  \
   (rs << 21) | (rt << 16) | (rd << 11) | (shift << 6) | function;             \
@@ -244,9 +249,6 @@ typedef enum
 #define mips_emit_srav(rd, rt, rs)                                            \
   mips_emit_special(srav, rs, rt, rd, 0)                                      \
 
-#define mips_emit_rotrv(rd, rt, rs)                                           \
-  mips_emit_special(srlv, rs, rt, rd, 1)                                      \
-
 #define mips_emit_sll(rd, rt, shift)                                          \
   mips_emit_special(sll, 0, rt, rd, shift)                                    \
 
@@ -255,9 +257,6 @@ typedef enum
 
 #define mips_emit_sra(rd, rt, shift)                                          \
   mips_emit_special(sra, 0, rt, rd, shift)                                    \
-
-#define mips_emit_rotr(rd, rt, shift)                                         \
-  mips_emit_special(srl, 1, rt, rd, shift)                                    \
 
 #define mips_emit_mfhi(rd)                                                    \
   mips_emit_special(mfhi, 0, 0, rd, 0)                                        \
@@ -340,11 +339,54 @@ typedef enum
 #define mips_emit_sltiu(rt, rs, imm)                                          \
   mips_emit_imm(sltiu, rs, rt, imm)                                           \
 
-#define mips_emit_ext(rt, rs, pos, size)                                      \
-  mips_emit_special3(ext, rs, rt, (size - 1), pos)                            \
 
-#define mips_emit_ins(rt, rs, pos, size)                                      \
-  mips_emit_special3(ins, rs, rt, (pos + size - 1), pos)                      \
+#define mips_emit_rotr(rd, rt, shift)                                         \
+ mips_emit_srl(rd,rt,shift); \
+ mips_emit_sll(mips_reg_at,rt,(32-shift)); \
+ mips_emit_or(rd,rd,mips_reg_at)
+
+// mips_debug_break("rotr"); 
+
+#define mips_emit_rotrv(rd, rt, rs)                                           \
+ mips_emit_srlv(rd,rt,rs); \
+ mips_emit_ori(mips_reg_at,mips_reg_zero,32); \
+ mips_emit_sub(mips_reg_at,mips_reg_at,rs); \
+ mips_emit_srlv(mips_reg_at,rt,mips_reg_at); \
+ mips_emit_or(rd,rd,mips_reg_at); 
+
+// mips_debug_break("rotrv"); \
+  mips_emit_special(srlv, rs, rt, rd, 1)                                      \
+
+
+
+#define mips_emit_ext(rt, rs, pos, size)                                      \
+  mips_emit_sw(mips_reg_t0,mips_reg_sp,-4);    \
+  mips_emit_srl(rt,rs,pos); \
+  mips_emit_lui(mips_reg_t0,((1 << size) - 1) >> 16 ); \
+  mips_emit_ori(mips_reg_t0,mips_reg_t0,((1 << size) - 1)); \
+  mips_emit_and(rt,rt,mips_reg_t0); \
+  mips_emit_lw(mips_reg_t0,mips_reg_sp,-4)                           \
+
+//  mips_debug_break("ext"); \
+//  mips_emit_special3(ext, rs, rt, (size - 1), pos)        
+
+#define mips_emit_ins(rt, rs, pos, size)     \
+mips_emit_sw(mips_reg_t0,mips_reg_sp,-4);    \
+mips_emit_sw(mips_reg_t1,mips_reg_sp,-8);    \
+mips_emit_lui(mips_reg_t0,~( ( ((1 << size)-1) << pos) >> 16) ); \
+mips_emit_ori(mips_reg_t0,mips_reg_t0,~(( ((1 << size)-1) << pos)) );  \
+mips_emit_and(rt,rt,mips_reg_t0); \
+mips_emit_sll(mips_reg_t1,rs,pos); \
+mips_emit_lui(mips_reg_t0, ( ((1 << size)-1) << pos) >> 16); \
+mips_emit_ori(mips_reg_t0,mips_reg_t0,((1 << size)-1) << pos);  \
+mips_emit_and(mips_reg_t1,mips_reg_t1,mips_reg_t0); \
+mips_emit_or(rt,rt,mips_reg_t1); \
+mips_emit_lw(mips_reg_t1,mips_reg_sp,-8); \
+mips_emit_lw(mips_reg_t0,mips_reg_sp,-4)                           
+
+//  mips_debug_break("ins"); \
+  mips_emit_special3(ins, rs, rt, (pos + size - 1), pos)                      
+
 
 // Breaks down if the backpatch offset is greater than 16bits, take care
 // when using (should be okay if limited to conditional instructions)
@@ -633,6 +675,8 @@ u32 arm_to_mips_reg[] =
 
 #define generate_block_prologue()                                             \
   update_trampoline = translation_ptr;                                        \
+  flush_address(translation_ptr); \
+ \
 /*  __asm__                                                                     \
   (                                                                           \
     "cache 8, 0(%0)\n"                                                        \
@@ -1445,7 +1489,7 @@ typedef enum
   generate_add_flags_epilogue(_rd)                                            \
 
 #define generate_op_movs_reg(_rd, _rn, _rm)                                   \
-  mips_emit_addu(_rd, _rm, reg_zero);                                         \
+  mips_emit_addu(_rd, _rm, reg_zero);        \
   generate_op_logic_flags(_rd)                                                \
 
 #define generate_op_mvns_reg(_rd, _rn, _rm)                                   \
