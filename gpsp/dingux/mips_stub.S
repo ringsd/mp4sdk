@@ -655,41 +655,47 @@ mips_indirect_branch_dual:
 .endm
 
 .macro translate_region_vram patch_handler
-  region_check 6, \patch_handler
   m_ext $2, $4, 15, 2               # $2 = bits 15 and 16 of address (delay)
+  region_check 6, \patch_handler
+  nop
   translate_region_vram_core
 .endm
 
 .macro translate_region_vram_load_align align_bits, alignment, patch_handler
-  region_check_align 6, \align_bits, \alignment, \patch_handler
   m_ext $2, $4, 15, 2               # $2 = bits 15 and 16 of address (delay)
+  region_check_align 6, \align_bits, \alignment, \patch_handler
+  nop
   translate_region_vram_core
 .endm
 
 .macro translate_region_vram_load_align16 align_bits, alignment, patch_handler
-  region_check_align 6, \align_bits, \alignment, \patch_handler
   m_ext $2, $4, 15, 2               # $2 = bits 15 and 16 of address (delay)
+  region_check_align 6, \align_bits, \alignment, \patch_handler
+  nop
   m_ins $4, $0, 0, 1                # mask out lower bit of address
   translate_region_vram_core
 .endm
 
 .macro translate_region_vram_load_align32 align_bits, alignment, patch_handler
-  region_check_align 6, \align_bits, \alignment, \patch_handler
   m_ext $2, $4, 15, 2               # $2 = bits 15 and 16 of address (delay)
+  region_check_align 6, \align_bits, \alignment, \patch_handler
+  nop
   m_ins $4, $0, 0, 2                # mask out lower two bits of address
   translate_region_vram_core
 .endm
 
 .macro translate_region_vram_store_align16 patch_handler
-  region_check 6, \patch_handler
   m_ext $2, $4, 15, 2               # $2 = bits 15 and 16 of address (delay)
+  region_check 6, \patch_handler
+  nop
   m_ins $4, $0, 0, 1                # mask out lower bit of address
   translate_region_vram_core
 .endm
 
 .macro translate_region_vram_store_align32 patch_handler
-  region_check 6, \patch_handler
   m_ext $2, $4, 15, 2               # $2 = bits 15 and 16 of address (delay)
+  region_check 6, \patch_handler
+  nop
   m_ins $4, $0, 0, 2                # mask out lower two bits of address
   translate_region_vram_core
 .endm
@@ -1334,12 +1340,12 @@ execute_load_eeprom_s8:
   eeprom_load patch_load_s8
 
 execute_load_backup_s8:
+  m_seb $2, $2                      # sign extend result (delay)
   backup_load patch_load_s8
-   m_seb $2, $2                      # sign extend result (delay)
 
 execute_load_open_s8:
+  m_seb $2, $2                      # sign extend result (delay)
   open_load8 patch_load_s8
-   m_seb $2, $2                      # sign extend result (delay)
 
 load_s8_ftable:
   .long execute_load_bios_s8      # 0x00 BIOS

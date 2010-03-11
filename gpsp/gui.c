@@ -717,11 +717,11 @@ s32 load_config_file()
       s32 menu_button = -1;
       file_read_array(config_file, file_options);
 
-      screen_scale = file_options[0] % 3;
+      screen_scale = file_options[0] % 2;
       screen_filter = file_options[1] % 2;
       global_enable_audio = file_options[2] % 2;
 #ifdef ZAURUS
-      audio_buffer_size_number = file_options[3] % 10;
+      audio_buffer_size_number = file_options[3] % 4;
 #else
       audio_buffer_size_number = file_options[3] % 11;
 #endif
@@ -844,7 +844,7 @@ typedef enum
 
 u32 savestate_slot = 0;
 u8  ssmsg[8];
-u32 status_display = 1;
+u32 status_display = 0;
 
 void get_savestate_snapshot(u8 *savestate_filename)
 {
@@ -1097,7 +1097,7 @@ u32 menu(u16 *original_screen)
 
   u8 *scale_options[] =
   {
-    "unscaled 3:2", "scaled 3:2", "fullscreen 16:9"
+    "normal", "fullscreen"
   };
 
   u8 *frameskip_options[] = { "automatic", "manual", "off" };
@@ -1106,14 +1106,12 @@ u32 menu(u16 *original_screen)
 #ifndef PSP_BUILD
   u8 *audio_buffer_options[] =
   {
-    "16 bytes", "32 bytes", "64 bytes",
-    "128 bytes", "256 bytes", "512 bytes", "1024 bytes", "2048 bytes",
-    "4096 bytes", "8192 bytes", "16284 bytes"
+    "2048 bytes", "4096 bytes", "8192 bytes", "16384 bytes"
   };
 #else
   u8 *audio_buffer_options[] =
   {
-    "3072 bytes", "4096 bytes", "5120 bytes", "6144 bytes", "7168 bytes",
+    "3072 bytes", "4096 bytes", "5120 bystes", "6144 bytes", "7168 bytes",
     "8192 bytes", "9216 bytes", "10240 bytes", "11264 bytes", "12288 bytes"
   };
 
@@ -1152,7 +1150,7 @@ u32 menu(u16 *original_screen)
   menu_option_type graphics_sound_options[] =
   {
     string_selection_option(NULL, "Display scaling", scale_options,
-     (u32 *)(&screen_scale), 3,
+     (u32 *)(&screen_scale), 2,
      "Determines how the GBA screen is resized in relation to the entire\n"
      "screen. Select unscaled 3:2 for GBA resolution, scaled 3:2 for GBA\n"
      "aspect ratio scaled to fill the height of the PSP screen, and\n"
@@ -1187,7 +1185,7 @@ u32 menu(u16 *original_screen)
      "significant change in performance.", 9),
 #ifndef PSP_BUILD
     string_selection_option(NULL, "Audio buffer", audio_buffer_options,
-           &audio_buffer_size_number, 11,
+           &audio_buffer_size_number, 4,
 #else
     string_selection_option(NULL, "Audio buffer", audio_buffer_options,
            &audio_buffer_size_number, 10,
@@ -1197,7 +1195,11 @@ u32 menu(u16 *original_screen)
      "value will give the most responsive audio.\n"
      "This option requires gpSP to be restarted before it will take effect.",
      10),
-    submenu_option(NULL, "Back", "Return to the main menu.", 12)
+	string_selection_option(NULL, "Status Display", enable_disable_options,
+													&status_display, 2,
+	"Display fps and some infomation.",12), 
+
+    submenu_option(NULL, "Back", "Return to the main menu.", 14)
   };
 
   make_menu(graphics_sound, submenu_graphics_sound, NULL);
@@ -1510,6 +1512,7 @@ u32 menu(u16 *original_screen)
 
 #ifdef ZAURUS
   clear_screen(0);
+  flip_screen();
   flip_screen();
 #endif
   return return_value;

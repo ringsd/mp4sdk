@@ -474,11 +474,7 @@ void update_gbc_sound(u32 cpu_ticks)
   }
 
   SDL_LockMutex(sound_mutex);
-#ifdef ZAURUS
   if(synchronize_flag && current_frameskip_type != auto_frameskip)
-#else
-  if(synchronize_flag)
-#endif
   {
     if(((gbc_sound_buffer_index - sound_buffer_base) % BUFFER_SIZE) >
      (audio_buffer_size * 3 / 2))
@@ -728,7 +724,7 @@ void reset_sound()
   sound_on = 0;
   sound_buffer_base = 0;
   sound_last_cpu_ticks = 0;
-  memset(sound_buffer, 0, audio_buffer_size);
+  memset(sound_buffer, 0, sizeof(sound_buffer));
 
   for(i = 0; i < 2; i++, ds++)
   {
@@ -773,11 +769,11 @@ void init_sound()
 {
 #ifdef PSP_BUILD
   audio_buffer_size = (audio_buffer_size_number * 1024) + 3072;
-#elif defined(TAVI_BUILD) || defined(ARM_ARCH)
-  audio_buffer_size = 16 << audio_buffer_size_number;
 #else
-  audio_buffer_size = 16384;
+  audio_buffer_size = 16 << audio_buffer_size_number;
 #endif
+ 
+  audio_buffer_size = 2048 << audio_buffer_size_number;
 
   SDL_AudioSpec desired_spec =
   {

@@ -40,7 +40,8 @@ timer_type timer[4];
 //debug_state current_debug_state = RUN;
 
 u32 breakpoint_value = 0x0010000;
-debug_state current_debug_state = RUN;
+//debug_state current_debug_state = RUN;
+debug_state current_debug_state = STEP;
 
 //u32 breakpoint_value = 0;
 
@@ -706,8 +707,7 @@ void synchronize()
     print_string(ssmsg, 0xF000, 0x000, 180, 30);
     strcpy(ssmsg, "     ");
     frames = 0;
-    skipped_num_frame = 60;
-    SDL_UpdateRect(screen, 40, 30, 240, 40);
+	skipped_num_frame = 60;
   }
 
   if(current_frameskip_type == manual_frameskip)
