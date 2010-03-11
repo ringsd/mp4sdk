@@ -52,6 +52,7 @@ u32 allow_smc_ram_u16 = 1;
 u32 allow_smc_ram_u32 = 1;
 
 void dcache_writeback_all(void);
+void flush_address(void *addr);
 
 typedef struct
 {
@@ -218,6 +219,8 @@ extern u8 bit_count[256];
   check_pc_region(pc);                                                        \
   opcode = address32(pc_address_block, (pc & 0x7FFF));                        \
   condition = block_data[block_data_position].condition;                      \
+  /*if (pc < 0x1000) \
+   printf("trans_pc = %08x : op = %08x : tptr = %08x\n",pc,opcode,translation_ptr ); */ \
                                                                               \
   if((condition != last_condition) || (condition >= 0x20))                    \
   {                                                                           \
@@ -911,7 +914,7 @@ extern u8 bit_count[256];
       }                                                                       \
       else                                                                    \
       {                                                                       \
-        /* MOVS rd, reg_op */                                                 \
+        /* MOVS rd, reg_op */ \
         arm_data_proc_unary(movs, reg_flags, flags);                          \
       }                                                                       \
       break;                                                                  \
@@ -2744,6 +2747,8 @@ u8 function_cc *block_lookup_address_##type(u32 pc)                           \
   u16 *location;                                                              \
   u32 block_tag;                                                              \
   u8 *block_address;                                                          \
+                           \
+   /* printf("PC:%08x\n",pc);  */  \
                                                                               \
   /* Starting at the beginning, we allow for one translation cache flush. */  \
   if(translation_recursion_level == 0)                                        \
@@ -2840,6 +2845,8 @@ u8 function_cc *block_lookup_address_##type(u32 pc)                           \
       block_address = (u8 *)(-1);                                             \
       break;                                                                  \
   }                                                                           \
+                                                                              \
+  /* printf("block_address:%08x\n",block_address);                 */         \
                                                                               \
   return block_address;                                                       \
 }                                                                             \
@@ -3276,7 +3283,7 @@ s32 translate_block_##type(u32 pc, translation_region_type                    \
   {                                                                           \
     block_data[block_data_position].block_offset = translation_ptr;           \
     type##_base_cycles();                                                     \
-    /*generate_step_debug();*/                                                \
+    /* generate_step_debug(); for debug */                                    \
                                                                               \
     if(pc == force_pc_update_target)                                          \
     {                                                                         \
@@ -3459,13 +3466,10 @@ void flush_translation_cache_ram()
   ewram_code_max = 0xFFFFFFFF;
 }
 
-// as a dummy... 
-void dcache_writeback_all(void)
+void flush_address(void *addr)
 {
-	cacheflush(rom_translation_cache,
-			   (rom_translation_ptr - rom_translation_cache) + 0x100,BCACHE);	
+	cacheflush(addr,0x8,BCACHE);
 }
-
 
 void flush_translation_cache_rom()
 {
@@ -3495,6 +3499,16 @@ void flush_translation_cache_bios()
   bios_translation_ptr = bios_translation_cache;
   memset(bios_rom + 0x4000, 0, 0x4000);
 }
+
+
+void dcache_writeback_all(void)
+{
+	cacheflush(rom_translation_cache,
+			   (rom_translation_ptr - rom_translation_cache) + 0x100,BCACHE);
+	cacheflush(bios_translation_cache,
+			   (bios_translation_ptr - bios_translation_cache) + 0x100,BCACHE);
+}
+
 
 void dump_translation_cache()
 {

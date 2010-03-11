@@ -14,14 +14,16 @@ BIN       = gpsp.dge
 
 # Platform specific definitions 
 
+COMMON_OPT = -g
+COMMON_OPT += -O3 -fno-builtin -fomit-frame-pointer
+
 VPATH      += ..
 CFLAGS     += -DZAURUS
 # NOTE: -funroll-loops will slow down compiling considerably
 CFLAGS     += -mips32 -G0
-CFLAGS     += -O2 -fno-builtin -fomit-frame-pointer
-#CFLAGS     += -g
+CFLAGS     += $(COMMON_OPT)
 
-ASFLAGS    += -g
+ASFLAGS    += $(COMMON_OPT)
 ASFLAGS    += -mips32
 
 INCLUDES   = -I${PREFIX}/include -I${PREFIX}/include/SDL
@@ -38,8 +40,8 @@ LIBS       = -L${PREFIX}/lib -lSDL -lpthread -lz
 	$(CC) $(ASFLAGS) $(INCLUDES) -c -o $@ $<
 
 all:	$(OBJS)
-	$(CC) $(OBJS) $(LIBS) -o $(BIN)  
-	$(STRIP) $(BIN)
+	$(CC) $(COMMON_OPT) $(OBJS) $(LIBS) -o $(BIN)  
+#	$(STRIP) $(BIN)
 
 clean:
 	rm -f *.o *.u *.z $(BIN) 

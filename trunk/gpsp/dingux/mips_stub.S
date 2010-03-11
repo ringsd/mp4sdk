@@ -52,8 +52,6 @@
 .global memory_map_write
 .global reg
 
-.global dcache_writeback_all_asm
-
 .extern reg
 .extern spsr
 
@@ -158,7 +156,7 @@
 .macro m_ext dest,src,pos,size
 	sw	t0,-4($sp)
 	srl	\dest,\src,\pos
-	li	t0,((1<<\size)-1)
+	li	t0,( (1 << \size) - 1 )
 	and	\dest,t0
 	lw	t0,-4($sp)
 .endm
@@ -174,12 +172,12 @@
 .endm
 
 .macro m_seh dest,src
-	sw	t0,-4($sp)
-	andi	\dest,\src,0xffff
-	xori	\dest,0x8000
-	ori	t0,zero,0x8000
-	sub	\dest,t0
-	lw	t0,-4($sp)
+	sw	  t0,-4($sp)
+	andi  \dest,\src,0xffff
+	xori  \dest,0x8000
+	ori	  t0,zero,0x8000
+	sub	  \dest,t0
+	lw	  t0,-4($sp)
 .endm
 
 .macro m_ror dest,src,shift
@@ -243,6 +241,76 @@
   lw $1, REG_CPSR($16)            # load CPSR
   extract_flags_body
 .endm
+
+
+.macro save_mips_regs
+  addiu $sp,$sp,-112
+  sw $1, 0($sp)
+  sw $2, 4($sp)
+  sw $3, 8($sp)
+  sw $4, 12($sp)
+  sw $5, 16($sp)
+  sw $6, 20($sp)
+  sw $7, 24($sp)
+  sw $8, 28($sp)
+  sw $9, 32($sp)
+  sw $10, 36($sp)
+  sw $11, 40($sp)
+  sw $12, 44($sp)
+  sw $13, 48($sp)
+  sw $14, 52($sp)
+  sw $15, 56($sp)
+
+  sw $16, 60($sp)
+  sw $17, 64($sp)
+  sw $18, 68($sp)
+  sw $19, 72($sp)
+  sw $20, 76($sp)
+  sw $21, 80($sp)
+  sw $22, 84($sp)
+  sw $23, 88($sp)
+  sw $24, 92($sp)
+  sw $25, 96($sp)
+  sw $26, 100($sp)
+  sw $27, 104($sp)
+  sw $28, 108($sp)
+.endm
+
+.macro load_mips_regs
+  lw $1, 0($sp)
+  lw $2, 4($sp)
+  lw $3, 8($sp)
+  lw $4, 12($sp)
+  lw $5, 16($sp)
+  lw $6, 20($sp)
+  lw $7, 24($sp)
+  lw $8, 28($sp)
+  lw $9, 32($sp)
+  lw $10, 36($sp)
+  lw $11, 40($sp)
+  lw $12, 44($sp)
+  lw $13, 48($sp)
+  lw $14, 52($sp)
+  lw $15, 56($sp)
+  lw $16, 60($sp)
+
+  lw $17, 64($sp)
+  lw $18, 68($sp)
+  lw $19, 72($sp)
+  lw $20, 76($sp)
+  lw $21, 80($sp)
+  lw $22, 84($sp)
+  lw $23, 88($sp)
+  lw $24, 92($sp)
+  lw $25, 96($sp)
+  lw $26, 100($sp)
+  lw $27, 104($sp)
+  lw $28, 108($sp)
+  addiu $sp,$sp,112
+
+.endm
+
+
 
 .macro save_registers
   sw $3, REG_R0($16)
@@ -373,16 +441,23 @@ mips_indirect_branch_dual:
   addiu $ra, $ra, -8              # rewind return address to function call
   sw $1, ($ra)                    # modify to call new handler
   
-  addiu $sp, $sp, -4              # make room on the stack
+  addiu $sp, $sp, -16              # make room on the stack
   sw $ra,($sp)                    # save return address
+  sw $4,4($sp)
+  sw $5,8($sp)
+  sw $6,12($sp)
   
   save_registers
-  m_jal	flush_translation_cache_rom
+  move $4,$ra
+  m_jal	flush_address
   nop
   restore_registers
   
+  lw $6,12($sp)
+  lw $5,8($sp)  
+  lw $4,4($sp)
   lw $ra,($sp)
-  addiu $sp , $sp , 4
+  addiu $sp , $sp , 16
   
 
 #  cache 0x1a, ($ra)               # writeback dcache line
@@ -421,10 +496,33 @@ mips_indirect_branch_dual:
   addiu $ra, $ra, -8              # rewind return address to function call
   sw $1, ($ra)                    # modify to call new handler
 
-#  cache 0x1a, ($ra)               # writeback dcache line
-#  cache 0x8, ($ra)                # invalidate icache line
-#  cache 0x1a, ($ra)               # do it again for good luck :P
-#  cache 0x8, ($ra)
+
+  addiu $sp, $sp, -16              # make room on the stack
+  sw $ra,($sp)                    # save return address
+  sw $4,4($sp)
+  sw $5,8($sp)
+  sw $6,12($sp)
+
+  save_registers
+  
+  move $4,$ra
+  m_jal	flush_address
+  nop
+
+  restore_registers
+
+  
+  lw $6,12($sp)
+  lw $5,8($sp)  
+  lw $4,4($sp)
+  lw $ra,($sp)
+  addiu $sp , $sp , 16
+  
+
+#   cache 0x1a, ($ra)               # writeback dcache line
+#   cache 0x8, ($ra)                # invalidate icache line
+#   cache 0x1a, ($ra)               # do it again for good luck :P
+#   cache 0x8, ($ra)
 
   jr $ra                          # return
   nop                             # wary of putting cache here
@@ -2134,9 +2232,22 @@ execute_store_palette_u8:
   andi $4, $4, 0x3FE              # align palette address
   addu $2, $2, $4
   sh $5, %lo(palette_ram)($2)     # palette_ram[address] = value
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+
+  # palette convertion R5G6B5 format for SDL(dingux)
+
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10)&0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2 
+
+#  sll $1, $5, 1                   # make green 6bits
+#  m_ins $1, $0, 0, 6                # make bottom bit 0
+#  m_ins $1, $5, 0, 5                # insert red channel into $1
+
   lui $2, %hi(palette_ram_converted)
   addu $2, $2, $4
   jr $ra                          # return
@@ -2235,9 +2346,21 @@ execute_store_palette_u16:
   andi $4, $4, 0x3FE              # wrap/align palette address
   addu $2, $2, $4
   sh $5, %lo(palette_ram)($2)     # palette_ram[address] = value
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+
+  # palette convertion R5G6B5 format for SDL(dingux)
+
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10)&0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2 
+  
+  # sll $1, $5, 1                   # make green 6bits
+  # m_ins $1, $0, 0, 6                # make bottom bit 0
+  # m_ins $1, $5, 0, 5                # insert red channel into $1
   lui $2, %hi(palette_ram_converted)
   addu $2, $2, $4
   jr $ra                          # return
@@ -2339,18 +2462,43 @@ execute_store_palette_u32:
   addu $2, $2, $4
   sw $5, %lo(palette_ram)($2)     # palette_ram[address] = value
 
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+#  sll $1, $5, 1                   # make green 6bits
+#  m_ins $1, $0, 0, 6                # make bottom bit 0
+#  m_ins $1, $5, 0, 5                # insert red channel into $1
+
+  # palette convertion R5G6B5 format for SDL(dingux)
+
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10) & 0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2 
+
+
   lui $2, %hi(palette_ram_converted)
   addu $2, $2, $4
   addiu $2, $2, %lo(palette_ram_converted)
   sh $1, ($2)
 
   srl $5, $5, 16                  # shift down to next palette value
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+
+  sw  $2,-4($sp)
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10)&0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2 
+  lw  $2,-4($sp)
+
+#  sll $1, $5, 1                   # make green 6bits
+#  m_ins $1, $0, 0, 6                # make bottom bit 0
+#  m_ins $1, $5, 0, 5                # insert red channel into $1
 
   jr $ra                          # return
   sh $1, 2($2)
@@ -2455,18 +2603,43 @@ execute_store_palette_u32a:
   addu $2, $2, $4
   sw $5, %lo(palette_ram)($2)     # palette_ram[address] = value
 
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+  # palette convertion R5G6B5 format for SDL(dingux)
+
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10)&0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2 
+
+
+#  sll $1, $5, 1                   # make green 6bits
+#  m_ins $1, $0, 0, 6                # make bottom bit 0
+#  m_ins $1, $5, 0, 5                # insert red channel into $1
+
   lui $2, %hi(palette_ram_converted)
   addu $2, $2, $4
   addiu $2, $2, %lo(palette_ram_converted)
   sh $1, ($2)
 
+  sw  $2,-4($sp)
   srl $5, $5, 16                  # shift down to next palette value
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10)&0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2 
+  lw  $2,-4($sp)
+
+
+#  sll $1, $5, 1                   # make green 6bits
+#  m_ins $1, $0, 0, 6                # make bottom bit 0
+#  m_ins $1, $5, 0, 5                # insert red channel into $1
 
   jr $ra                          # return
   sh $1, 2($2)
@@ -2873,9 +3046,21 @@ ext_store_palette16b:
   lui $2, %hi(palette_ram)
   addu $2, $2, $4
   sh $5, %lo(palette_ram)($2)     # palette_ram[address] = value
-  sll $1, $5, 1                   # make green 6bits
-  m_ins $1, $0, 0, 6                # make bottom bit 0
-  m_ins $1, $5, 0, 5                # insert red channel into $1
+#  sll $1, $5, 1                   # make green 6bits
+#  m_ins $1, $0, 0, 6                # make bottom bit 0
+#  m_ins $1, $5, 0, 5                # insert red channel into $1
+
+  # palette convertion R5G6B5 format for SDL(dingux)
+
+  andi $1,$5,0x1f  # (value & 0x1f) << 11 
+  sll  $1,$1,11    
+  andi $2,$5,0x3e0 # (value & 0x3e0) << 1
+  sll  $2,$2,1
+  or   $1,$1,$2
+  srl  $2,$5,10   # (value >> 10)&0x1f
+  andi $2,$2,0x1f 
+  or   $1,$1,$2
+
   lui $2, %hi(palette_ram_converted)
   addu $2, $2, $4
   jr $ra                          # return

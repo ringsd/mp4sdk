@@ -137,7 +137,7 @@ s32 translate_block_thumb(u32 pc, translation_region_type translation_region,
 #define ROM_TRANSLATION_CACHE_SIZE (1024 * 512 * 4 * 5)
 #define RAM_TRANSLATION_CACHE_SIZE (1024 * 384 * 2)
 #define BIOS_TRANSLATION_CACHE_SIZE (1024 * 128 * 2)
-#define TRANSLATION_CACHE_LIMIT_THRESHOLD (1024 * 32)
+#define TRANSLATION_CACHE_LIMIT_THRESHOLD (1024) // changed
 
 #else
 

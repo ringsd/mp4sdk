@@ -20,7 +20,6 @@
 #include "common.h"
 #include <sys/time.h>
 
-
 extern SDL_Surface *screen;
 
 #ifdef PSP_BUILD
@@ -36,8 +35,13 @@ timer_type timer[4];
 
 //debug_state current_debug_state = COUNTDOWN_BREAKPOINT;
 //debug_state current_debug_state = PC_BREAKPOINT;
-u32 breakpoint_value = 0x7c5000;
+
+//u32 breakpoint_value = 0x7c5000;
+//debug_state current_debug_state = RUN;
+
+u32 breakpoint_value = 0x0010000;
 debug_state current_debug_state = RUN;
+
 //u32 breakpoint_value = 0;
 
 frameskip_type current_frameskip_type = auto_frameskip;
@@ -160,7 +164,7 @@ int main(int argc, char *argv[])
   u32 ticks;
   u32 dispstat;
   u8 load_filename[512];
-
+	
 #ifdef PSP_BUILD
   sceKernelRegisterSubIntrHandler(PSP_VBLANK_INT, 0,
    vblank_interrupt_handler, NULL);
@@ -270,8 +274,8 @@ int main(int argc, char *argv[])
   execute_arm_translate(execute_cycles);
 #else
 #ifdef ZAURUS
-	execute_arm(execute_cycles);
-//  execute_arm_translate(execute_cycles);
+//    execute_arm(execute_cycles);
+	execute_arm_translate(execute_cycles);
 #else
   execute_arm_translate(execute_cycles);
 #endif
@@ -847,8 +851,8 @@ u32 file_length(u8 *dummy, FILE *fp)
 
 void delay_us(u32 us_count)
 {
-  //SDL_Delay(us_count / 1000);
-  sleep(0);
+  SDL_Delay(us_count / 1000); // for dingux
+  // sleep(0);
 }
 
 void get_ticks_us(u64 *ticks_return)
