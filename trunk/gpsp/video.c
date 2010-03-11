@@ -88,6 +88,7 @@ static void Ge_Finish_Callback(int id, void *arg)
 #else
 
 SDL_Surface *screen = NULL;
+SDL_Surface *display = NULL;
 const u32 video_scale = 1;
 
 #define get_screen_pixels()                                                 \
@@ -3359,6 +3360,45 @@ void flip_screen()
     current_scanline_ptr += pitch;                                            \
   }                                                                           \
 
+void update_normal(void)
+{
+	SDL_BlitSurface(screen,NULL,display,NULL);
+	SDL_Flip(display);
+}
+
+void update_display(void)
+{	
+	if (!screen_scale)
+		SDL_BlitSurface(screen,NULL,display,NULL);
+	else
+	{
+		int dx,dy,sx,sy;
+
+		int line = 0;
+		u32 pitch = get_screen_pitch();
+		u16 *src = ((u16 *)get_screen_pixels()) + 40 + (40 * pitch);
+		u16 *dest = ((u16 *)display->pixels) + ((240-214)/2) * pitch;
+
+		for(dy=sy=0; dy < 214; dy++)
+		{
+			for(dx=sx=0; dx < 320; dx++)
+			{
+				dest[dx] = src[sx>>2];
+				sx += 3;
+			}
+			dest += pitch;
+			sy+=3;
+			while(line < (sy>>2))
+			{
+				src += pitch;
+				line++;
+			}
+		}
+	}
+
+	SDL_Flip(display);
+}
+
 void flip_screen()
 {
   if (!screen)
@@ -3401,7 +3441,7 @@ void flip_screen()
       }
     }
   }
-  SDL_Flip(screen);
+  update_normal();
 }
 
 #endif
@@ -3414,7 +3454,8 @@ void update_screen()
   if (!screen)
 		return;
   if(!skip_next_frame)
-    SDL_UpdateRect(screen, 40, 40, 240, 160);
+	  update_display();
+
 #else
 	if(!skip_next_frame)
 		flip_screen();
@@ -3520,7 +3561,12 @@ void init_video()
 //	  exit(1);
   }
   //screen = SDL_SetVideoMode(320, 240, 16, SDL_FULLSCREEN);
-  screen = SDL_SetVideoMode(320, 240, 16, 0);
+  display = SDL_SetVideoMode(320, 240, 16, 0);
+  screen = SDL_CreateRGBSurface(SDL_SWSURFACE,320,240,16,
+								display->format->Rmask,
+								display->format->Gmask,
+								display->format->Bmask,
+								display->format->Amask);
 #else
   SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK | SDL_INIT_NOPARACHUTE);
   screen = SDL_SetVideoMode(240 * video_scale, 160 * video_scale, 16, 0);

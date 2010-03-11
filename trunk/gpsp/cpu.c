@@ -3933,6 +3933,13 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
     thumb = 1;
 
   instruction_count++;
+	
+/*  if (current_debug_state == Z_BREAKPOINT && iwram[0x8058] == 0x1e)
+  {
+	  debug = 1;
+	  current_debug_state = STEP;
+  }
+*/
 
   switch(current_debug_state)
   {
@@ -4039,13 +4046,12 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
     print_arm_registers();
     print_flags();
     print_stack();
-/*    printf("vcount: %d\t\tinstructions in: %x\n", io_registers[REG_VCOUNT],
+    printf("vcount: %d\t\tinstructions in: %x\n", io_registers[REG_VCOUNT],
      instruction_count);
-    printf("cycles remaining: %d\t\tROM cache: %d (%08x) (%x)\n",
+/*    printf("cycles remaining: %d\t\tROM cache: %d (%08x) (%x)\n",
      cycles, rom_translation_ptr - rom_translation_cache,
      last_instruction, read_memory8(0x03001958 + 0x38));
-*/
-	  
+*/	  
     if(current_debug_state != STEP_RUN)
     {
       #ifdef PSP_BUILD
@@ -4077,7 +4083,7 @@ u32 function_cc step_debug(u32 pc, u32 cycles)
 
       #endif
     }
-
+	  
     switch(key)
     {
       case 'd':

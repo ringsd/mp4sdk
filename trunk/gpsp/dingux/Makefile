@@ -39,10 +39,15 @@ LIBS       = -L${PREFIX}/lib -lSDL -lpthread -lz
 %.o: %.S
 	$(CC) $(ASFLAGS) $(INCLUDES) -c -o $@ $<
 
-all:	$(OBJS)
+all: $(BIN)
+
+$(BIN) : $(OBJS)
 	$(CC) $(COMMON_OPT) $(OBJS) $(LIBS) -o $(BIN)  
-#	$(STRIP) $(BIN)
 
 clean:
 	rm -f *.o *.u *.z $(BIN) 
 
+strip:
+	$(STRIP) $(BIN)
+
+release: $(BIN) strip	

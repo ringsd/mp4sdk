@@ -2797,7 +2797,8 @@ u8 function_cc *block_lookup_address_##type(u32 pc)                           \
         s32 translation_result;                                               \
                                                                               \
         redo:                                                                 \
-                                                                              \
+        /* printf("New PC:%08x\n",pc); for debug */ \
+\
         translation_recursion_level++;                                        \
         ((u32 *)rom_translation_ptr)[0] = pc;                                 \
         ((u32 **)rom_translation_ptr)[1] = NULL;                              \
@@ -3503,6 +3504,8 @@ void flush_translation_cache_bios()
 
 void dcache_writeback_all(void)
 {
+	cacheflush(ram_translation_cache,
+			   (ram_translation_ptr - ram_translation_cache) + 0x100,BCACHE);
 	cacheflush(rom_translation_cache,
 			   (rom_translation_ptr - rom_translation_cache) + 0x100,BCACHE);
 	cacheflush(bios_translation_cache,

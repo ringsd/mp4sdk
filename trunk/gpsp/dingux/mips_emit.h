@@ -351,7 +351,7 @@ typedef enum
  mips_emit_srlv(rd,rt,rs); \
  mips_emit_ori(mips_reg_at,mips_reg_zero,32); \
  mips_emit_sub(mips_reg_at,mips_reg_at,rs); \
- mips_emit_srlv(mips_reg_at,rt,mips_reg_at); \
+ mips_emit_sllv(mips_reg_at,rt,mips_reg_at); \
  mips_emit_or(rd,rd,mips_reg_at); 
 
 // mips_debug_break("rotrv"); \
