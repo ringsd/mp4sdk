@@ -1,0 +1,2 @@
+unplug.exe是一个弹出可移动磁盘的命令行工具，命令 unplug x:        【x为盘符】
+最好执行install.bat,把exe复制到windows目录,然后就可以方便的使用这个命令了
