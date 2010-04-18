@@ -4,5 +4,5 @@ set RVCT22INC=
 set ARMINC=
 make -f makefile shell=shell_app_hd8800 LinkScript=DLL.SCF  dllcfg=dlmake.ini
 dlmake dlmake.ini
-copy PicShow-HD8800.cc j:\
+copy PicShow-HD8800.cc i:\
 pause
