@@ -13,6 +13,31 @@
 
 #include <global.h>
 
+KEYNAME platform_keyname[] = {
+{	"UP"	,			SYSKEY_UP				},
+{	"DOWN"	,		SYSKEY_DOWN		  },
+{	"LEFT"	,		SYSKEY_LEFT		  },
+{	"RIGHT",		SYSKEY_RIGHT	  },
+{	"A",				SYSKEY_A			  },
+{	"B",				SYSKEY_B			  },
+{	"C",				SYSKEY_C			  },
+{	"D",				SYSKEY_D			  },
+{	"SELECT"	,	SYSKEY_SELECT	  },
+{	"START",		SYSKEY_START	  },
+{	"L",				SYSKEY_L			  },
+{	"R",				SYSKEY_R			  },
+{	"MENU"	,		SYSKEY_MENU		  },
+{	"VOLUP",		SYSKEY_VOLUP	  },
+{	"VOLDOWN",	SYSKEY_VOLDOWN  },
+{	"POWER",		SYSKEY_POWER	  },
+{	"ESCAPE"	,	SYSKEY_ESCAPE	  },
+{	"E",				SYSKEY_E			  },
+{	"F",				SYSKEY_F			  },
+{	"SAVE"	,		SYSKEY_SAVE		  },
+{	"LOAD"	,		SYSKEY_LOAD		  },
+{	NULL,							0							  }
+};
+
 //Font相关配置
 char xfont_nls_path[ MAX_PATH ];		//多国语言转换表目录
 char xfont_fonts_path[ MAX_PATH ];		//字体目录

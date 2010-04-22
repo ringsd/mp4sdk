@@ -1,6 +1,6 @@
 // shell.cpp : Defines the entry point for the application.
 //
-#include <vld.h>
+//#include <vld.h>
 #include "stdafx.h"
 #include "resource.h"
 #include "MMSYSTEM.H"
@@ -30,8 +30,8 @@ void Update_ClientRect32();
 void (*Update_ClientRect)( void ) = Update_ClientRect32;
 
 
-#define MAX_SCR_WIDTH 800
-#define MAX_SCR_HEIGHT 600
+#define MAX_SCR_WIDTH 1920
+#define MAX_SCR_HEIGHT 1080
 
 u8 Video_Buffer[ MAX_SCR_WIDTH * MAX_SCR_HEIGHT * 4 ];
 u8 Video_Buffer32[ MAX_SCR_WIDTH * MAX_SCR_HEIGHT * 4 ];
