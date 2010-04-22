@@ -382,3 +382,67 @@ STRING_INFO * textoutW( const wchar_t * string, int min_x, int min_y, int max_x,
 {
 	return mtextoutW( lcd_bufferui(), screen_get_width(), screen_get_height(), string, min_x, min_y, max_x, max_y, fontcolor, bgcolor );
 }
+
+STRING_INFO * textout_get_size_line( const char *string, int width, int height )
+{
+	static STRING_INFO info;
+	
+	u16 ucode;
+	int x = 0;
+	int y = 0;
+	const u8 * str = (u8 *)string;
+	
+	while( *str )
+	{
+	    int length;
+        XFONT_INFO xinfo;
+        
+		length = xfont_nls_ansiex_to_unicode( textout_nls, str, &ucode );
+		str += length;
+		
+		xfont_getsize( textout_font, ucode, textout_size, textout_style, &xinfo );
+
+		x += xinfo.font_width + textout_word_spacing;
+		
+		if( x >= width )
+			break;
+			
+		if( *str == '\r' )
+		{
+			str++;
+		}
+		if( *str == '\n' )
+		{
+			str++;
+			break;
+		}
+	}
+	
+	info.height = textout_line_height;
+	info.width = x;
+	info.length = (const char *)str-string;
+	
+	return &info;
+}
+
+STRING_INFO * textout_get_size( const char * string, int width, int height )
+{
+	static STRING_INFO info, *pinfo;
+	const char * pstr = string;
+	int max_width = 0;
+	int y = 0;
+	while( y < height )
+	{
+		pinfo = textout_get_size_line( pstr, width, height );
+		if( pinfo->length == 0 )
+			break;
+		y += pinfo->height;
+		pstr += pinfo->length;
+		if( max_width < pinfo->width )
+			max_width = pinfo->width;
+	}
+	info.width = max_width;
+	info.height = y;
+	info.length = pstr - string;
+	return &info;
+}
