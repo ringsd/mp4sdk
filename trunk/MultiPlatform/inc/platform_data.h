@@ -30,6 +30,9 @@ extern NLS_FILE_NAME * nls_fname;   //全局NLS文件名列表
 extern int gui_default_line_height;		//默认的行高
 extern int gui_default_font_size;		//默认的字体大小
 
+//平台定义的按键名称表
+extern KEYNAME platform_keyname[];
+
 #ifdef __cplusplus
 }
 #endif

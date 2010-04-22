@@ -69,6 +69,9 @@ STRING_INFO * mtextoutW16( u16 *buf, int bufwidth, int bufheight, const wchar_t 
 STRING_INFO * mtextout555( u16 *buf, int bufwidth, int bufheight, const char * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
 STRING_INFO * mtextoutW555( u16 *buf, int bufwidth, int bufheight, const wchar_t * string, int min_x, int min_y, int max_x, int max_y, unsigned int fontcolor, unsigned int bgcolor );
 
+STRING_INFO * textout_get_size( const char * string, int width, int height );
+STRING_INFO * textout_get_size_line( const char *string, int width, int height );
+
 enum{
 	XFONT_STYLE_NORMAL   =  0x0,
 	XFONT_STYLE_BOLD     =  0x1,
