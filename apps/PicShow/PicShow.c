@@ -39,6 +39,10 @@ KEYMAP pskeymap_right0[] = {
 {	PSKEY_DOWN,	SYSKEY_DOWN	},
 {	PSKEY_LEFT,	SYSKEY_LEFT	},
 {	PSKEY_RIGHT,	SYSKEY_RIGHT	},
+{	PSKEY_PAGE_UP,	0	},
+{	PSKEY_PAGE_DOWN,	0	},
+{	PSKEY_PAGE_LEFT,	0	},
+{	PSKEY_PAGE_RIGHT,	0	},
 {	PSKEY_ZOOMIN,	SYSKEY_A	},
 {	PSKEY_ZOOMOUT,	SYSKEY_B	},
 {	PSKEY_PREV,	SYSKEY_C	},
@@ -57,6 +61,10 @@ KEYMAP pskeymap_right90[] = {
 {	PSKEY_DOWN,	SYSKEY_DOWN	},
 {	PSKEY_LEFT,	SYSKEY_LEFT	},
 {	PSKEY_RIGHT,	SYSKEY_RIGHT	},
+{	PSKEY_PAGE_UP,	0	},
+{	PSKEY_PAGE_DOWN,	0	},
+{	PSKEY_PAGE_LEFT,	0	},
+{	PSKEY_PAGE_RIGHT,	0	},
 {	PSKEY_ZOOMIN,	SYSKEY_A	},
 {	PSKEY_ZOOMOUT,	SYSKEY_B	},
 {	PSKEY_PREV,	SYSKEY_C	},
@@ -75,6 +83,10 @@ KEYMAP pskeymap_right180[] = {
 {	PSKEY_DOWN,	SYSKEY_DOWN	},
 {	PSKEY_LEFT,	SYSKEY_LEFT	},
 {	PSKEY_RIGHT,	SYSKEY_RIGHT	},
+{	PSKEY_PAGE_UP,	0	},
+{	PSKEY_PAGE_DOWN,	0	},
+{	PSKEY_PAGE_LEFT,	0	},
+{	PSKEY_PAGE_RIGHT,	0	},
 {	PSKEY_ZOOMIN,	SYSKEY_A	},
 {	PSKEY_ZOOMOUT,	SYSKEY_B	},
 {	PSKEY_PREV,	SYSKEY_C	},
@@ -93,6 +105,10 @@ KEYMAP pskeymap_right270[] = {
 {	PSKEY_DOWN,	SYSKEY_DOWN	},
 {	PSKEY_LEFT,	SYSKEY_LEFT	},
 {	PSKEY_RIGHT,	SYSKEY_RIGHT	},
+{	PSKEY_PAGE_UP,	0	},
+{	PSKEY_PAGE_DOWN,	0	},
+{	PSKEY_PAGE_LEFT,	0	},
+{	PSKEY_PAGE_RIGHT,	0	},
 {	PSKEY_ZOOMIN,	SYSKEY_A	},
 {	PSKEY_ZOOMOUT,	SYSKEY_B	},
 {	PSKEY_PREV,	SYSKEY_C	},
@@ -509,8 +525,30 @@ static void PicShow_Zoom( IMAGE_ZOOM * image_zoom )
 			key = 0;
 		}
 		
+		if( key & PSKEY_PAGE_UP )
+		{
+		    y -= screen_get_height() * sh / h;
+		    menu_get_key();
+		}
 		
+		if( key & PSKEY_PAGE_DOWN )
+		{
+		    y += screen_get_height() * sh / h;
+		    menu_get_key();
+		}
 		
+		if( key & PSKEY_PAGE_LEFT )
+		{
+		    x -= screen_get_width() * sw / w;
+		    menu_get_key();
+		}
+		
+		if( key & PSKEY_PAGE_RIGHT )
+		{
+		    x += screen_get_width() * sw / w;
+		    menu_get_key();
+		}
+		    
 		if( key & PSKEY_NEXT )
 		{
 			PicShow_ListNext();
@@ -521,6 +559,37 @@ static void PicShow_Zoom( IMAGE_ZOOM * image_zoom )
 			PicShow_ListPrev();
 			return;
 		}
+		
+		// ÏÞ¶¨·¶Î§
+		if( (int)screen_get_width() * sw / w < sw )
+		{
+		    if( x + (int)screen_get_width() * sw / w > sw )
+		        x = sw - (int)screen_get_width() * sw / w;
+		    if( x < 0 )
+		        x = 0;
+		}
+		else
+		{
+		    if( x + (int)screen_get_width() * sw / w < sw )
+		        x = sw - (int)screen_get_width() * sw / w;
+		    if( x > 0 )
+		        x = 0;
+		}
+		if( (int)screen_get_height() * sh / h < sh )
+		{
+		    if( y + (int)screen_get_height() * sh / h > sh )
+		        y = sh - (int)screen_get_height() * sh / h;
+		    if( y < 0 )
+		        y = 0;
+		}
+		else
+		{
+		    if( y + (int)screen_get_height() * sh / h < sh )
+		        y = sh - (int)screen_get_height() * sh / h;
+		    if( y > 0 )
+		        y = 0;
+		}
+		 
 		if( key &(PSKEY_LEFT_SLIP | PSKEY_RIGHT_SLIP | PSKEY_UP_SLIP | PSKEY_DOWN_SLIP | 
 					PSKEY_LEFT | PSKEY_RIGHT | PSKEY_UP | PSKEY_DOWN ) )
 		{
@@ -616,7 +685,6 @@ static void PicShow_ListPrev( void )
 static void PicShow_SingleView( char * fname )
 {
 	int width, height;
-	u32 * buf = NULL;
 	MM_IMAGE *	image = NULL;
 	BITMAP_ZOOM * zoom = NULL;
 	IMAGE_ZOOM * image_zoom = NULL;
@@ -629,39 +697,19 @@ static void PicShow_SingleView( char * fname )
 	MM_image_size	( image, &width, &height  );
 	ui_printf( "Size: %d x %d\n", width, height );
 
-	//buf = malloc( width*height*4 );
-
-	//if( buf == NULL )
-	//	goto err;
-
 	printf( "Reading...\n" );
 
-	//MM_image_read	( image, buf, width, height );
-	//PicShow_MemLess_ReadImage( image, buf );
 	image_zoom = image_zoom_open( image );
-	
-	//screen_set_mode( 320, 240, LCD_A8R8G8B8 );
-	
-	//zoom = bitmap_zoom_open( buf, width, height );
-	//if( zoom == NULL )
-	//	goto err;
 
 	PicShow_Zoom( image_zoom );
 
-	//bitmap_zoom_close( zoom );
-	//zoom = NULL;
 	image_zoom_close( image_zoom );
 	
 	MM_image_close	( image );
 	image = NULL;
 	
-	//free( buf );
-	buf = NULL;
-	
 	return;
 err:
-	if( buf )
-		free( buf );
 	if( zoom )
 		bitmap_zoom_close( zoom );
 	if( image )
@@ -694,7 +742,7 @@ static void save_current_dir( const char * path )
 }
 
 #define MAX_ARGC 256
-#define COLOR_BG 0x80000000
+#define COLOR_BG 0x00000000
 #define COLOR_FT 0x00FFFFFF
 
 void picshow_main( char * img_path )
@@ -706,7 +754,7 @@ void picshow_main( char * img_path )
 	
 	DbgCon_SetColor( COLOR_FT, COLOR_BG );
 	
-	ui_printf( "PicShow V0.31\n" );
+	ui_printf( "PicShow V0.33\n" );
 	
 	PicShow_ListOpen( img_path );
 	run_flag = RUN;
@@ -733,42 +781,23 @@ static void platform_deinit()
 	xfont_cache_deinit();
 }
 
-#define unit 25
-
-unsigned int A_pic[unit][unit];
-unsigned int B_pic[unit][unit]; 
-
-void test( void )
-{
-    MM_IMAGE * a;
-    int i;
-    a = MM_image_open("A.jpg");
-	if(a==NULL)
-		return;
-	for(i=0;i<unit;i++)
-		MM_image_readline(a,A_pic[i],i);
-	MM_image_close(a); 
-}
-
 static void test_hw_lcd_resizer( void )
 {
     int scr_w = screen_get_width();
     int scr_h = screen_get_height();
-    int i = 0;
     
-    scr_w = scr_w / 2;
-    scr_h = scr_h / 2;
+    scr_w = scr_w / 8;
+    scr_h = scr_h / 8;
     
     printf( "test_hw_lcd_resizer\n" );
     
-    // while( *(volatile u32*)0x0 );
-    screen_set_mode( scr_w, scr_h, LCD_A8R8G8B8 );
-    
-    while( i < 100 )
+    while( scr_w < screen_get_width() )
     {
-        printf   (  "%d %d %d\n", scr_w, scr_h, i  );
-        ui_printf( "%d %d %d\n", scr_w, scr_h, i );
-        i++;
+        screen_set_mode( scr_w, scr_h, LCD_A8R8G8B8 );
+        ui_printf( "%d %d %d\n", scr_w, scr_h );
+        scr_w += 8;
+        scr_h += 4;
+        sys_delay(100);
     }
 }
 
@@ -787,7 +816,7 @@ void app_main( void )
 	{
 		char start_path[MAX_PATH];
 		strcpy( start_path, PicDir );
-		while( file_explorer_openfile( start_path, "\\.(JPG|jpg|BMP|bmp)$", img_path, "PicShow v0.32" ) == 0 )
+		while( file_explorer_openfile( start_path, "\\.(JPG|jpg|BMP|bmp|PNG|png)$", img_path, "PicShow v0.33" ) == 0 )
 		{
 			char * p;
 			picshow_main( img_path );

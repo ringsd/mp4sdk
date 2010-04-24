@@ -19,7 +19,7 @@
 #define COLOR_SELECT 0x000000FF
 #define COLOR_FORM_SELECT 0x000000FF
 #define COLOR_FONT_SELECT 0x00000000
-#define COLOR_FONT_BG  0xFF000000
+#define COLOR_FONT_BG  0x00000000
 #define MENU_ITEM_HEIGHT gui_default_line_height		//菜单行高
 #define MENU_ITEM_WIDTH (gui_default_font_size/2)		//菜单名字节宽度
 #define MENU_ITEM_LEFT MENU_ITEM_WIDTH		//菜单字距菜单左边距离

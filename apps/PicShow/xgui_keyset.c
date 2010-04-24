@@ -15,7 +15,7 @@
 
 #define COLOR_FORM 0x00FFFFFF
 #define COLOR_FONT 0x00000000
-#define COLOR_FONT_BG 0xFF000000
+#define COLOR_FONT_BG 0x00000000
 #define COLOR_SELECT 0x000000FF
 
 #define KEYSET_HEIGHT gui_default_line_height		//²Ëµ¥ÐÐ¸ß
@@ -37,6 +37,7 @@ typedef struct XGUI_KEYSET {
 static int XGUI_KeySet_Set( XGUI_KEYSET * hKeySet, XGUI_WND * hWnd, XGUI_RECT * rect )
 {
 	u32 key;
+	int i;
 	XGUI_RECT this_rect;
 	this_rect.left = rect->left+KEYSET_WIDTH;
 	this_rect.right = rect->right-KEYSET_WIDTH;
@@ -62,7 +63,17 @@ static int XGUI_KeySet_Set( XGUI_KEYSET * hKeySet, XGUI_WND * hWnd, XGUI_RECT * 
 						this_rect.left, this_rect.top, 
 						this_rect.right, this_rect.bottom, 
 						COLOR_FONT, COLOR_FONT_BG );
-						
+		
+		i = 0;
+		while( hKeySet->keymap[i].phykey )
+		{
+		    if( hKeySet->keymap[i].phykey == key )
+		    {
+		        hKeySet->keymap[i].phykey = 0;
+		    }
+		    i++;
+		}
+		
 		hKeySet->keymap[hKeySet->select].phykey = key;
 		
 		lcd_updateui();

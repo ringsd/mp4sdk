@@ -75,12 +75,12 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/nodefaultlib:libcd"
-				AdditionalDependencies="MultiMedia.lib Graphics.lib advlib.lib shell.res miniio.lib font.lib shell.lib xgui.lib Winmm.lib odbc32.lib odbccp32.lib User32.lib Gdi32.lib Comdlg32.lib zlib.lib"
+				AdditionalDependencies="MultiMedia.lib Graphics.lib advlib.lib shell.res miniio.lib font.lib shell.lib xgui.lib Winmm.lib odbc32.lib odbccp32.lib User32.lib Gdi32.lib Comdlg32.lib zlib.lib vld.lib"
 				OutputFile=".\Debug/PicShow.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
 				AdditionalLibraryDirectories="&quot;E:\Program Files\Microsoft Platform SDK for Windows XP SP2\Lib&quot;;..\..\lib\vc2005"
-				IgnoreDefaultLibraryNames="LIBCMTD.lib"
+				IgnoreDefaultLibraryNames="LIBCMT"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/PicShow.pdb"
 				SubSystem="2"
@@ -173,7 +173,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="MultiMedia.lib Graphics.lib advlib.lib shell.res miniio.lib font.lib shell.lib xgui.lib Winmm.lib odbc32.lib odbccp32.lib User32.lib Gdi32.lib Comdlg32.lib zlib.lib"
+				AdditionalDependencies="MultiMedia.lib Graphics.lib advlib.lib shell.res miniio.lib font.lib shell.lib xgui.lib Winmm.lib odbc32.lib odbccp32.lib User32.lib Gdi32.lib Comdlg32.lib zlib.lib vld.lib"
 				OutputFile=".\Release/PicShow.exe"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
