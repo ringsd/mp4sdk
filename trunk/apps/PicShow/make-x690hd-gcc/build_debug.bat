@@ -1,6 +1,6 @@
 PATH D:/cygwin/arm-linux/bin;D:/CYGWIN/BIN
-rem make -f makefile clean
-make -f makefile debug=enable 2>&1 |tee err.txt
+make -f makefile debug=enable
 call genDLL.bat
-copy PicShow.CC j:\
+dlmake dlmake.ini
+copy PicShow.CC k:\
 pause
