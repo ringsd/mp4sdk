@@ -48,6 +48,11 @@ void lcd_updateui( void );
 void lcd_clearui( u32 color );
 //返回32位缓存
 u32* lcd_bufferui( void );
+// 获取绘图缓冲
+void * lcd_draw( void );
+// 交换缓冲
+void lcd_swap( void );
+
 //----------------------------------------------------------------------------
 //系统延时(毫秒)
 void sys_delay( u32 time );
