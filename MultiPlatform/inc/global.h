@@ -32,7 +32,7 @@ extern "C" {
 #include <joypad.h>
 #include <miniio.h>
 #include <advlib.h>
-#include <MM_Image.H>
+#include <MM_Image.h>
 #include <xgui.h>
 #include <platform_data.h>
 #include <graphics.h>
