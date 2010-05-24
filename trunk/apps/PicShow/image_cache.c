@@ -11,7 +11,7 @@
 		All rights reserved.
 ***************************************************************************/
 #include <global.h>
-#include "MM_Image.H"
+#include "MM_Image.h"
 #include "image_cache.h"
 
 IMAGE_CACHE_READLINE * image_cache_readline_open( MM_IMAGE * image )
