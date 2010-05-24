@@ -37,16 +37,17 @@ LD_SCRIPT = link.xn
 # Directories
 # **********************************************
 
+ROOT_DIR  = ../../../
 ROOT      = ..
 SRCROOT   = ../ \
 
 SRCDIR    = $(SRCROOT)
 MXUDIR    = $(ROOT)/lib/gba_mxu
 VPATH     = $(SRCDIR) $(MXUDIR)
-INCDIR    = ../../inc/ \
-						$(SRCROOT) \
-						
-LIBROOT   = ../../lib/x690hd_gcc
+INCDIR    = $(ROOT_DIR)/MultiPlatform/inc/ \
+	$(SRCROOT) \
+
+LIBROOT   = $(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc
 
 # **********************************************
 # Image file names and map file
@@ -72,7 +73,8 @@ INCLUDE   = $(addprefix -I,$(INCDIR))
 _DEFINE   = $(addprefix -D,$(DEFINE))
 
 W_OPTS    = -fno-pic -pipe -O2 -Wall -finline-functions -fomit-frame-pointer -msoft-float \
--fno-builtin -mcpu=arm926ej-s
+-fno-builtin -mcpu=arm9
+# `-fno-builtin -mcpu=arm926ej-s
 
 CC_OPTS   = -c -g $(INCLUDE) $(W_OPTS) $(_DEFINE)
 
@@ -104,16 +106,16 @@ OBJ_S   = $(notdir $(patsubst %.S, %.o, $(SRC_S)))
 OBJ     = $(OBJ_C) $(OBJ_CPP) $(OBJ_S)
 
 LIBS    = \
-					../../lib/x690hd_gcc/miniio.a \
-					../../lib/x690hd_gcc/font.a \
-					../../lib/x690hd_gcc/MultiMedia.a \
-					../../lib/x690hd_gcc/Graphics.a \
-					../../lib/x690hd_gcc/xgui.a \
-					../../lib/x690hd_gcc/advlib.a \
-					../../lib/x690hd_gcc/shell_app.a \
-					../../lib/x690hd_gcc/zlib.a \
-					../../lib/x690hd_gcc/libc.a \
-					../../lib/x690hd_gcc/stdpatch.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/miniio.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/font.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/MultiMedia.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/Graphics.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/xgui.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/advlib.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/shell_app.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/zlib.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/libc.a \
+	$(ROOT_DIR)/MultiPlatform/lib/x690hd_gcc/stdpatch.a \
 					
 # **********************************************
 # Rules

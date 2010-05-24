@@ -11,7 +11,7 @@
 		All rights reserved.
 ***************************************************************************/
 #include <global.h>
-#include "MM_Image.H"
+#include "MM_Image.h"
 #include "image_cache.h"
 #include "bitmap_zoom.h"
 #include "image_zoom.h"
