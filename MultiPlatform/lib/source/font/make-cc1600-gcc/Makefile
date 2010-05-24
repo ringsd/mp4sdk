@@ -91,7 +91,8 @@ INCLUDE   = $(addprefix -I,$(INCDIR))
 _DEFINE   = $(addprefix -D,$(DEFINE))
 
 W_OPTS    = -fno-pic -pipe -O2 -Wall -finline-functions -fomit-frame-pointer -msoft-float \
--fno-builtin -mcpu=arm926ej-s -fsigned-char
+-fno-builtin -mcpu=arm9 -fsigned-char
+# -fno-builtin -mcpu=arm926ej-s -fsigned-char
 
 CC_OPTS   = -c -g $(INCLUDE) $(W_OPTS) $(_DEFINE)
 

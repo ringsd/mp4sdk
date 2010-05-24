@@ -11,7 +11,7 @@
 		All rights reserved.
 ***************************************************************************/
 #include <global.h>
-#include "MM_bmp.H"
+#include "MM_bmp.h"
 
 enum{
 BI_RGB = 0,
