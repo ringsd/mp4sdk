@@ -61,7 +61,8 @@ _DEFINE   = $(addprefix -D,$(DEFINE))
 
 #使用O1和O2和O3都会引起错误(临时寄存器的保护问题)
 W_OPTS    = -fno-pic -pipe -O0 -Wall -finline-functions -fomit-frame-pointer -msoft-float \
--fno-builtin -mcpu=arm926ej-s
+-fno-builtin -mcpu=arm9
+# -fno-builtin -mcpu=arm926ej-s
 
 CC_OPTS   = -c -g $(INCLUDE) $(W_OPTS) $(_DEFINE)
 

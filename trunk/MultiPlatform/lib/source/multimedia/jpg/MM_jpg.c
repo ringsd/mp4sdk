@@ -13,7 +13,7 @@
 #include <global.h>
 #include <jpeglib.h>
 #include <setjmp.h>
-#include "MM_jpg.H"
+#include "MM_jpg.h"
 
 //#define RANDOM_READ_SUPPORTED
 
