@@ -808,7 +808,6 @@ void app_main( void )
 	char img_path[MAX_PATH];
 //	test_hw_lcd_resizer();
 //	return;
-	
 	sys_get_arg( &argc, argv, MAX_ARGC );
 	platform_init();
 	ps_config_load();
