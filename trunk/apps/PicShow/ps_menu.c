@@ -390,16 +390,12 @@ PICSHOW_MENU_HANDLE * hMenu;
 
 MENU_CMD PicShow_Menu( void )
 {
-	menu_cmd = MENU_CMD_NORMAL;
 	XGUI_Init( RootCallBack );
-	TRACE_LOG("");
 	hMenu = PicShow_CreateMenu( main_menu, "main menu", 0, 0, XGUI_GetDesktop() );
 	XGUI_WindowsManager();
-//	while( !*(volatile u32 *)0 );
 	PicShow_DestroyMenu( hMenu );
-	TRACE_LOG("");
 	XGUI_DeInit();
-	return menu_cmd;
+	return MENU_CMD_NORMAL;
 }
 
 
