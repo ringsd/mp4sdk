@@ -140,7 +140,7 @@ $(IMAGE_SEC) : $(IMAGE_AXF)
 	cp downenv/EXPORT_TABLE_EXEC export.tab
 	cp downenv/SECTION_INFO_EXEC section.dsc
 	cp downenv/RO_RW_EXEC downenv.bin
-	dlmake $(dllcfg)
+	./dlmake.exe $(dllcfg)
 
 $(IMAGE_AXF) : $(OBJ) $(LD_SCRIPT) ./Makefile $(_LIBS)
 	$(LD) $(OBJ) $(_LIBS) $(LD_OPTS) -o $@
