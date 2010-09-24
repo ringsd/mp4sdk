@@ -31,7 +31,6 @@ OFORMAT = elf32-littlemips
 
 TARGET = downenv
 LD_SCRIPT = link.xn
-#TEXT_BASE = 0x80800000
 
 # **********************************************
 # Directories
@@ -41,8 +40,8 @@ ROOT      = ..
 SRCROOT   = ../ \
 
 SRCDIR    = $(SRCROOT)
-MXUDIR    = $(ROOT)/lib/gba_mxu
-VPATH     = $(SRCDIR) $(MXUDIR)
+            
+VPATH     = $(SRCDIR)
 INCDIR    = ../../inc/ \
 						$(SRCROOT) \
 						
@@ -61,7 +60,9 @@ MAP       = $(TARGET).map
 # **********************************************
 
 # machine defined
-DEFINE =	__X690HD
+DEFINE =	__MULTIPLATFORM__ \
+            __MULTIPLATFORM_HD8800__ \
+
 
 #debug setting
 ifeq ("$(debug)", "enable")
@@ -88,15 +89,13 @@ LD_OPTS   = -Bstatic -g -T $(LD_SCRIPT) -o $(IMAGE_ELF) -Map $(MAP) \
 # Files to be compiled
 # **********************************************
 
-SRC_C   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
-SRC_CPP = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.cpp))
-SRC_S   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.S))
-SRC     = $(SRC_C) $(SRC_CPP) $(SRC_S)
+SRC_C   =   bitmap_zoom.c image_cache.c image_zoom.c PicShow.c ps_config.c ps_menu.c \
+            xgui_keyset.c xgui_menu.c
 
-MXU_SRC = $(foreach dir, $(MXUDIR), $(wildcard $(dir)/*.c))
-MXU_MID = $(notdir $(patsubst %.c, %.m, $(MXU_SRC)))
-MXU_ASM = $(notdir $(patsubst %.m, %.S, $(MXU_MID)))
-MXU_OBJ = $(notdir $(patsubst %.S, %.o, $(MXU_ASM)))
+SRC_CPP =   
+
+SRC_S   = 
+SRC     = $(SRC_C) $(SRC_CPP) $(SRC_S)
 
 OBJ_C   = $(notdir $(patsubst %.c, %.o, $(SRC_C)))
 OBJ_CPP = $(notdir $(patsubst %.cpp, %.o, $(SRC_CPP)))
@@ -110,7 +109,7 @@ LIBS    = \
 					../../lib/x690hd_gcc/Graphics.a \
 					../../lib/x690hd_gcc/xgui.a \
 					../../lib/x690hd_gcc/advlib.a \
-					../../lib/cc1800_gcc/shell_app.a \
+					../../lib/cc1800_gcc/$(shell).a \
 					../../lib/x690hd_gcc/zlib.a \
 					../../lib/x690hd_gcc/libc.a \
 					../../lib/x690hd_gcc/stdpatch.a \
@@ -131,6 +130,7 @@ $(IMAGE_BIN) : $(IMAGE_ELF)
 	$(OBJCOPY) -O binary -j .import_table $(IMAGE_ELF) import.tab
 	$(OBJCOPY) -O binary -j .import_string $(IMAGE_ELF) import.str
 	$(OBJCOPY) -O binary -j .section_info $(IMAGE_ELF) section.dsc
+	./dlmake.exe $(dllcfg)
 
 $(IMAGE_ELF) : $(OBJ) $(LD_SCRIPT) ./Makefile $(LIBS)
 	$(LD) $(OBJ) $(LIBS) $(LD_OPTS)
@@ -143,13 +143,6 @@ $(OBJ_CPP) : %.o : %.cpp
 
 $(OBJ_S) : %.o : %.S
 	$(CC) $(CC_OPTS_A) -o $@ $<
-
-$(MXU_OBJ) : %.o : %.S
-	$(CC) $(CC_OPTS_A) -o $@ $<
-$(MXU_ASM) : %.S : %.m	
-	mxu_as $< > $@
-$(MXU_MID) : %.m : %.c
-	$(CC) -S $(CC_OPTS) -o $@ $<
 
 .PHONY : clean
 
