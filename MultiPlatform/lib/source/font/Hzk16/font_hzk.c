@@ -77,7 +77,7 @@ STRING_INFO * mtextout_line( u32 * buf, int bufwidth, int bufheight, const char 
 		length = xfont_nls_ansiex_to_unicode( textout_nls, str, &ucode );
 		str += length;
 		
-		xfont_udraw( textout_font, ucode, textout_size, textout_style, fontcolor, bgcolor, LCD_A8R8G8B8, (bgcolor>>24) ? XFONT_BLEND_MODE_COVER : XFONT_BLEND_MODE_ALPHA,
+		xfont_udraw( textout_font, ucode, textout_size, textout_style, fontcolor, bgcolor, LCD_A8R8G8B8, ((bgcolor>>24) != 0xFF) ? XFONT_BLEND_MODE_ALPHA : XFONT_BLEND_MODE_COVER,
 			 x, y+textout_line_height, scr_width, 
 			 buf, &font_width, &font_height, limit );
 
@@ -167,7 +167,7 @@ STRING_INFO * mtextoutW_line( u32 * buf, int bufwidth, int bufheight, const wcha
 	
 	while( *str )
 	{
-		xfont_udraw( textout_font, *str, textout_size, textout_style, fontcolor, bgcolor, LCD_A8R8G8B8, (bgcolor>>24) ? XFONT_BLEND_MODE_COVER : XFONT_BLEND_MODE_ALPHA,
+		xfont_udraw( textout_font, *str, textout_size, textout_style, fontcolor, bgcolor, LCD_A8R8G8B8, ((bgcolor>>24) != 0xFF) ? XFONT_BLEND_MODE_ALPHA : XFONT_BLEND_MODE_COVER,
 			 x, y+textout_line_height, scr_width, 
 			 buf, &font_width, &font_height, limit );
 
