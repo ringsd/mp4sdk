@@ -1,1 +1,1 @@
-copy *.exe c:\windows
+copy *.exe %SystemRoot%
