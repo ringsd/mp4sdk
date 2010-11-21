@@ -259,8 +259,9 @@ static int sdl_update_keyboard( void )
             }
         }
         sys_keys_flip ^= 1;
+        return 0;
     }
-    return 0;
+    return -1;
 }
 
 static Uint32 SDL_lastkeys;
@@ -278,26 +279,26 @@ void MPF_PumpEvents(_THIS)
 
 
 	SDL_lastkeys=keys;
-
-#if 0
-	for (i=0;i<21 ;i++ )
-	{
-		if (keysd&mpf_keymap[i].MPF_key)
-		{
-			sym.sym=mpf_keymap[i].SDL_key;
-			sym.scancode=mpf_keymap[i].MPF_key;
-			SDL_PrivateKeyboard(SDL_PRESSED,&sym);
-		}		
-		if (keysu&mpf_keymap[i].MPF_key)
-		{
-			sym.sym=mpf_keymap[i].SDL_key;
-			sym.scancode=mpf_keymap[i].MPF_key;
-			SDL_PrivateKeyboard(SDL_RELEASED,&sym);
-		}
-	}
-#else
-    sdl_update_keyboard(); 
-#endif
+    
+    if( sdl_update_keyboard() == -1 )
+    {
+    	for (i=0;i<21 ;i++ )
+    	{
+    		if (keysd&mpf_keymap[i].MPF_key)
+    		{
+    			sym.sym=mpf_keymap[i].SDL_key;
+    			sym.scancode=mpf_keymap[i].MPF_key;
+    			SDL_PrivateKeyboard(SDL_PRESSED,&sym);
+    		}		
+    		if (keysu&mpf_keymap[i].MPF_key)
+    		{
+    			sym.sym=mpf_keymap[i].SDL_key;
+    			sym.scancode=mpf_keymap[i].MPF_key;
+    			SDL_PrivateKeyboard(SDL_RELEASED,&sym);
+    		}
+    	}
+    }
+    
 #if 0 //°´¼ü°æ
 	mouse_x=0;mouse_y=0;
 	if (keys&SYSKEY_UP)
