@@ -212,7 +212,7 @@ int MM_jpg_write( MM_IMAGE_JPG * jpg, void *buf, int width, int height )
 	cinfo.input_components = 3;		/* # of color components per pixel */
 	cinfo.in_color_space = JCS_RGB; 	/* colorspace of input image */
 	jpeg_set_defaults(&cinfo);
-	jpeg_set_quality(&cinfo, 80, TRUE /* limit to baseline-JPEG values */);
+	jpeg_set_quality(&cinfo, 90, TRUE /* limit to baseline-JPEG values */);
 	jpeg_start_compress(&cinfo, TRUE);
 	row_stride = width * 3;	/* JSAMPLEs per row in image_buffer */
 	line_buffer = malloc( width * 3 );
