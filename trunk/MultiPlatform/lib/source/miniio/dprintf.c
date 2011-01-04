@@ -92,6 +92,21 @@ void lprintf( u32 x, u32 y ,const char *format ,...)
 	lcd_updateui();
 }
 
+void loc_printf( u32 x, u32 y ,const char *format ,...)
+{
+    int width = screen_get_width();
+	u8 buffer[1024];
+	va_list argptr;
+	va_start(argptr, format);
+	vsprintf(buffer,format,argptr);
+	va_end(argptr);
+	if( move_height == 0 )
+	    move_height = gui_default_line_height;
+	fbfill( lcd_bufferui() + x + y * width, color_bg, move_height * width );
+	textout( buffer, x, y, screen_get_width(), screen_get_height(), color_font, color_bg );
+	lcd_updateui();
+}
+
 void DbgCon_Cls( void )
 {
 	dp_x = 0;
