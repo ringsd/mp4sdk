@@ -58,6 +58,8 @@ SRC_C   = _splitpath.c \
 					vfprintf.c \
 					vsprintf.c \
 					sprintf.c \
+					strncasecmp.c \
+					strcasecmp.c
 
 SRC_CPP = 
 
