@@ -289,21 +289,12 @@ HWAVEOUT hwo;
 
 s16 waveout_buffer0[WAVEOUT_BUFFER_LENGTH/2];
 s16 waveout_buffer1[WAVEOUT_BUFFER_LENGTH/2];
+int waveout_buffer0_size;
+int waveout_buffer1_size;
 
 WAVEHDR wavwhdr0={
 	(s8 *)waveout_buffer0,
-	WAVEOUT_BUFFER_LENGTH,
-	NULL,
-	NULL,
-	WHDR_DONE,
-	0,
-	NULL,
-	NULL
-};
-
-WAVEHDR wavwhdr1={
-	(s8 *)waveout_buffer1,
-	WAVEOUT_BUFFER_LENGTH,
+	8000,
 	NULL,
 	NULL,
 	WHDR_DONE,
@@ -328,17 +319,21 @@ void CALLBACK waveOutProc(
 {
 	static u32 flip=1;
 	if(uMsg != WOM_DONE) return;
-	if( &wavwhdr0 == (LPWAVEHDR)dwParam1 )
+	if( flip )
 	{
+		SetEvent( bufwritting1 );
 		WaitForSingleObject( bufempty0, INFINITE );
+		wavwhdr0.dwBufferLength = waveout_buffer0_size;
+		wavwhdr0.lpData = (LPSTR)waveout_buffer0;
 		waveOutWrite(hwo,  &wavwhdr0, sizeof(wavwhdr0));
-		SetEvent( bufwritting0 );
 	}
 	else
 	{
+		SetEvent( bufwritting0 );
 		WaitForSingleObject( bufempty1, INFINITE );
-		waveOutWrite(hwo,  &wavwhdr1, sizeof(wavwhdr1));
-		SetEvent( bufwritting1 );
+		wavwhdr0.dwBufferLength = waveout_buffer1_size;
+		wavwhdr0.lpData = (LPSTR)waveout_buffer1;
+		waveOutWrite(hwo,  &wavwhdr0, sizeof(wavwhdr0));
 	}
 	flip^=1;
 }
@@ -349,20 +344,18 @@ u32 w32waveout_write( s8 *buffer, u32 size )
 	if( size > WAVEOUT_BUFFER_LENGTH )
 		size = WAVEOUT_BUFFER_LENGTH;
 	
-	//memcpy( waveout_buffer0, buffer, size );
-	
 	if(flip)
 	{
-		WaitForSingleObject( bufwritting0, 1000 );
+		WaitForSingleObject( bufwritting0, INFINITE );
 		memcpy( waveout_buffer0, buffer, size );
-		wavwhdr0.dwBufferLength = size;
+		waveout_buffer0_size = size;
 		SetEvent(bufempty0); 
 	}
 	else
 	{
-		WaitForSingleObject( bufwritting1, 1000 );
+		WaitForSingleObject( bufwritting1, INFINITE );
 		memcpy( waveout_buffer1, buffer, size );
-		wavwhdr1.dwBufferLength = size;
+		waveout_buffer1_size = size;
 		SetEvent(bufempty1); 
 	}
 	
@@ -395,14 +388,18 @@ s32 w32waveout_init( u16 freq , u16 bit , u16 channel )
 
 	if( mmresult == MMSYSERR_NOERROR )
 	{
+		waveout_buffer0_size = 8000;
+		waveout_buffer1_size = 8000;
 		waveOutPrepareHeader(hwo,&wavwhdr0,sizeof(wavwhdr0));
-		waveOutPrepareHeader(hwo,&wavwhdr1,sizeof(wavwhdr1));
 		bufempty0 = CreateEvent( NULL,FALSE,FALSE,NULL );
 		bufempty1 = CreateEvent( NULL,FALSE,FALSE,NULL );
 		bufwritting0 = CreateEvent( NULL,FALSE,TRUE,NULL );
 		bufwritting1 = CreateEvent( NULL,FALSE,TRUE,NULL );
+		ResetEvent(bufempty0);
+		ResetEvent(bufempty1);
+		SetEvent(bufwritting0);
+		SetEvent(bufwritting1);
 		waveOutWrite(hwo,  &wavwhdr0, sizeof(wavwhdr0));
-		waveOutWrite(hwo,  &wavwhdr1, sizeof(wavwhdr1));
 		return 0;
 	}
 	else
