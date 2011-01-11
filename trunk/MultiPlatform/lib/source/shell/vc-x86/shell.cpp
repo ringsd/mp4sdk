@@ -239,6 +239,10 @@ u32 kbd_get_key( void )
 		key|=SYSKEY_ESCAPE;
 	if(KEY_DOWN('P'))
 		key|=SYSKEY_POWER;
+    if(KEY_DOWN('Q'))
+		key|=SYSKEY_L;
+	if(KEY_DOWN('P'))
+		key|=SYSKEY_R;
 	return key;
 }
 
