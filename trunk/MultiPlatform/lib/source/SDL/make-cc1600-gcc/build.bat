@@ -1,6 +1,6 @@
-PATH D:/software/cygwin/arm-linux/bin;D:/software/CYGWIN/BIN
+PATH D:/cygwin/arm-linux/bin;D:/CYGWIN/BIN
 make -f Makefile
-rem copy libSDL.a ..\..\..\x690hd_gcc\libSDL.a
+copy libSDL.a ..\..\..\x690hd_gcc\libSDL.a
 pause
 
 
