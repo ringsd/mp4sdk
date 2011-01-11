@@ -120,8 +120,8 @@ int xfont_uread( XFONT * xfont, int code, int size, int style, u8 * buf, int lim
 		return 0;
 	}
 	
-	//cache读取,暂时只对GUI默认大小的字体起效
-	if( cache_handle && (size == gui_default_font_size) )
+	//cache读取,暂时只对小于xfont_cache_font_max_size的字体起效
+	if( cache_handle && (size <= xfont_cache_font_max_size) )
 	{
 		char * data;
 		if( (data = xfont_cache_read( cache_handle, xfont, info, code, size, style )) != NULL )
