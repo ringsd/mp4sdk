@@ -92,9 +92,9 @@ MM_IMAGE_PNG *		MM_png_open	( u8 *path )
 	if (!info_ptr)
 		goto err;
     
-    end_info = png_create_info_struct(png_ptr);
-	if (!end_info)
-		goto err;
+    //end_info = png_create_info_struct(png_ptr);
+	//if (!end_info)
+	//	goto err;
     
 	if (setjmp(png_jmpbuf(png_ptr)))
 		goto err;
@@ -220,6 +220,7 @@ void		MM_png_close	( MM_IMAGE_PNG * image )
 err:
     png_destroy_read_struct(&image->png_ptr, &image->info_ptr, (png_infopp)NULL);
     fclose( image->fp );
+    free( image );
 }
 
 int 		MM_png_size		( MM_IMAGE_PNG * image, int * width, int * height  )
