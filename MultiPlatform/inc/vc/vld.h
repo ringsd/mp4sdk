@@ -36,6 +36,7 @@
 #define VLD_CONFIG_SELF_TEST            0x2
 #define VLD_CONFIG_SHOW_USELESS_FRAMES  0x4
 #define VLD_CONFIG_START_DISABLED       0x8
+#define VLD_MAX_DATA_DUMP               0x10
 
 #ifndef VLDBUILD
 
