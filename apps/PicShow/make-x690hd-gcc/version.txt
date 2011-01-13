@@ -1,4 +1,0 @@
-[INFO]
-NAME = PicShow
-VERSION = V0.32
-DEVELOPER = flyspy
