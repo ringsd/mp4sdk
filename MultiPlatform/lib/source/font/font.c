@@ -332,51 +332,63 @@ static void xfont_udraw_rgb888
 	dst = (u32*)buf + pitch * (starty-info.bitmap_top) + startx + info.bitmap_left;
 	line_add = pitch - (endx - startx);
 	
-	for( y = starty; y < endy; y ++ )
+	if( blending_mode == XFONT_BLEND_MODE_COVER )
 	{
-		if( (u32)dst >= (u32)((u32)buf + limit) )
-			break;
-		for( x = startx; x < endx; x ++ )
-		{ 
-			int gray = *src;
-			u32 data;
-			int gray_bg = 255-gray;
-			switch( blending_mode )
-			{
-				case XFONT_BLEND_MODE_COVER:
-					data = bgcolor;
-					break;
-				case XFONT_BLEND_MODE_ALPHA:
-					data = *dst;
-					break;
-				default:
-					goto err;
-			}
-			
-			if( gray == 255 )
-			{
-				*dst = color;
-			}
-			else if( gray > 0 )
-			{
-				//register int mask = 0xFF;
-				//u32 r = (	( data & (mask<<16) ) * ( gray_bg ) + 
-				//				( fc_r * gray ) ) & (mask<<24);
-				//u32 g = (	( data & (mask<<8) ) * ( gray_bg ) + 
-				//				( fc_g * gray ) ) & (mask<<16);
-				//u32 b = (	( data & mask )	* ( gray_bg ) + 
-				//				( fc_b * gray ) );
-				// *dst = ((r | g | b)>>8) | (mask & (mask<<24));
-				
-				*dst =  ((((data & 0xFF00FF) * gray_bg + (color & 0xFF00FF) * gray)&0xFF00FF00) |
-                (((data & 0xFF00) * gray_bg + (color & 0xFF00) * gray) & 0xFF0000)) >> 8;
-			}
-			src++;
-			dst++;
-		}
-		dst += line_add;
+	    for( y = starty; y < endy; y ++ )
+	    {
+		    if( (u32)dst >= (u32)((u32)buf + limit) )
+			    break;
+		    for( x = startx; x < endx; x ++ )
+		    { 
+		        u32 data;
+			    int gray = *src;
+			    int gray_bg = 255-gray;
+			    data = bgcolor;
+    			
+			    if( gray == 255 )
+			    {
+				    *dst = color;
+			    }
+			    else if( gray > 0 )
+			    {
+				    *dst = ((((data & 0xFF00FF) * gray_bg + (color & 0xFF00FF) * gray)&0xFF00FF00) |
+                    (((data & 0xFF00) * gray_bg + (color & 0xFF00) * gray) & 0xFF0000)) >> 8;
+			    }
+			    src++;
+			    dst++;
+		    }
+		    dst += line_add;
+	    }
 	}
-err:
+	else
+	if( blending_mode == XFONT_BLEND_MODE_ALPHA )
+	{
+	    for( y = starty; y < endy; y ++ )
+	    {
+		    if( (u32)dst >= (u32)((u32)buf + limit) )
+			    break;
+		    for( x = startx; x < endx; x ++ )
+		    { 
+			    u32 data;
+			    int gray = *src;
+			    int gray_bg = 255-gray;
+			    data = *dst;
+    			
+			    if( gray == 255 )
+			    {
+				    *dst = color;
+			    }
+			    else if( gray > 0 )
+			    {
+				    *dst = ((((data & 0xFF00FF) * gray_bg + (color & 0xFF00FF) * gray)&0xFF00FF00) |
+                    (((data & 0xFF00) * gray_bg + (color & 0xFF00) * gray) & 0xFF0000)) >> 8;
+			    }
+			    src++;
+			    dst++;
+		    }
+		    dst += line_add;
+	    }
+	}
 	*width = info.font_width;
 	*height = info.bitmap_height;
 }
