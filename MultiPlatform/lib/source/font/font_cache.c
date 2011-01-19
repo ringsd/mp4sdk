@@ -20,52 +20,82 @@
 //#define MAX_FONT_SIZE	32				//支持cache的最大字体大小
 
 typedef struct XFONT_CACHE_BLOCK{
-	struct XFONT_CACHE_BLOCK * prev;
-	struct XFONT_CACHE_BLOCK * next;
-	int index;
-	XFONT_INFO info;
-	XFONT * xfont;
-	int size;
-	int style;
-	char data[1];
+	int         index;
+	XFONT_INFO  info;
+	XFONT *     xfont;
+	int         size;
+	int         style;
+	char *      data;
 } XFONT_CACHE_BLOCK;
 
 struct XFONT_CACHE{
-	int blockcount;
-	int max_cache_size;
+	int total_blocks;
 	int max_font_size;
-	int used_size;
-	XFONT_CACHE_BLOCK * first;
-	XFONT_CACHE_BLOCK * last;
+	
+	int block_cycle;
+	XFONT_CACHE_BLOCK * blocks;
+	char * datas;
+	
 	XFONT_CACHE_BLOCK * block_index[ 0x10000 ];
 };
 
 XFONT_CACHE * xfont_cache_open( int max_cache_size, int max_font_size )
 {
-	int i;
-	XFONT_CACHE * handle = malloc( sizeof(XFONT_CACHE) );
-	if( handle == NULL ) goto err;
-	handle->max_cache_size = max_cache_size;
+	int                 i;
+	XFONT_CACHE *       handle;
+	int                 data_size;
+	
+	handle = malloc( sizeof(XFONT_CACHE) );
+	if( handle == NULL )
+	{
+	    goto err;
+	}
+	
 	handle->max_font_size = max_font_size;
-	handle->used_size = 0;
-	handle->blockcount = 0;
-	handle->last = NULL;
-	handle->first = NULL;
+	
+	data_size   = max_font_size * max_font_size;
+	
+	handle->total_blocks = max_cache_size / data_size;
+	
+	handle->blocks = malloc( handle->total_blocks * sizeof(XFONT_CACHE_BLOCK) );
+	
+	if( handle->blocks == NULL )
+	    goto err1;
+
+	handle->block_cycle = 0;
+	
+	handle->datas = malloc( handle->total_blocks * data_size );
+	
+	if( handle->datas == NULL )
+	    goto err2;
+	
+	for( i = 0; i < handle->total_blocks; i++ )
+	{
+	    handle->blocks[i].index = 0xFFFF;
+	    handle->blocks[i].data = handle->datas + i * data_size;
+	}
+	
 	for( i = 0; i < 0x10000; i++ )
+	{
 		handle->block_index[i] = NULL;
+	}
+	
 	return handle;
+
+err2:
+    free( handle->blocks );
+err1:
+    free( handle );
 err:
 	return NULL;
 }
 
 int xfont_cache_close( XFONT_CACHE * handle )
 {
-	int i;
-	for( i = 0; i < 0x10000; i++ )
-	{
-		if( handle->block_index[i] )
-			free( handle->block_index[i] );
-	}
+	if( handle->blocks )
+		free( handle->blocks );
+    if( handle->datas )
+        free( handle->datas );
 	free( handle );
 	return 0;
 }
@@ -73,27 +103,12 @@ int xfont_cache_close( XFONT_CACHE * handle )
 char * xfont_cache_read( XFONT_CACHE * handle, XFONT * xfont, XFONT_INFO * info, int code, int size, int style )
 {
 	XFONT_CACHE_BLOCK * block = handle->block_index[code];
-	if( block )				//已缓存,读取并挂到队首
+	if( block )
 	{
 		if( block->xfont != xfont ||
 			block->size != size ||
 			block->style != style )
 			goto err;
-		#if 0
-		if( handle->first != block )	//判断队首是否自己
-		{
-			if( block->prev )						//当前块的前后项链接起来
-				block->prev->next = block->next;
-			if( block->next )
-				block->next->prev = block->prev;
-				
-			handle->first->prev = block;	//原队首变为第二项
-			
-			block->prev = NULL;				//挂接到队首
-			block->next = handle->first;
-			handle->first = block;
-		}
-		#endif
 		memcpy( info, &block->info, sizeof(XFONT_INFO) );
 		return block->data;
 	}
@@ -107,43 +122,18 @@ int xfont_cache_write( XFONT_CACHE * handle, XFONT * xfont, XFONT_INFO * info, i
 	
 	if( size > handle->max_font_size )					//判断是否在cache支持的范围内
 		return -1;
-		
-	if( handle->block_index[code] != NULL )				//当前编码已经缓存,则直接返回
-		return 0;
 	
-	if( handle->used_size < handle->max_cache_size )	//小于最大内存,申请新的块,并挂在队尾
-	{
-		int blocksize = sizeof(XFONT_CACHE_BLOCK) + (handle->max_font_size*handle->max_font_size) - 1;
-		block = malloc( blocksize );
-		if( block == NULL )
-		{
-			return -1;			//在限定的内存范围内出现了内存不足,返回错误
-		}
-		if( handle->first == NULL )
-			handle->first = block;
-		handle->blockcount++;
-		handle->used_size += blocksize;
-		//printf( "%d\n", handle->blockcount );
-	}
-	else					//不再申请新的内存,替换已有的块
-	{
-		block = handle->first;		//取队列第一块
-		handle->first = block->next;	//第二块变成队首
-		if( block->next )
-			block->next->prev = NULL;	//队首的前项设为NULL
-			
-		handle->block_index[block->index] = NULL;	//在表中清空这一块
-	}
-	memcpy( block->data, buffer, size*size );	//复制数据到缓存
+	block = &handle->blocks[ handle->block_cycle ];
+	
+	handle->block_index[ block->index ] = NULL;
+	
+	handle->block_cycle = (handle->block_cycle + 1) % handle->total_blocks;
+	
+	memcpy( block->data, buffer, size*size );	        //复制数据到缓存
 	memcpy( &block->info, info, sizeof(XFONT_INFO) );	//复制INFO到缓存
 	block->xfont = xfont;
 	block->size = size;
 	block->style = style;
-	block->next = NULL;
-	block->prev = handle->last;						//挂载到队尾
-	if( handle->last )
-		handle->last->next = block;
-	handle->last = block;
 	block->index = code;
 	handle->block_index[code] = block;
 	
