@@ -12,9 +12,9 @@
 
 ***************************************************************************/
 
-#include <sys/stat.h>
+//#include <sys/stat.h>
 
-int fstat (int __fd, struct stat *__buf)
+int fstat (int __fd, void *__buf)
 {
     printf( "dummy fstat\n" );
     return 0;
