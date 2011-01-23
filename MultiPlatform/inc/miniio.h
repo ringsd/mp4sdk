@@ -19,8 +19,10 @@ extern "C" {
 
 //类printf函数,输出到ui窗口
 void ui_printf( const char *format ,...);
+
 //可定位坐标的dprintf
-void lprintf( u32 x, u32 y ,const char *format ,...);
+void lc_printf( u32 x, u32 y ,const char *format ,...);
+
 //可定位坐标的printf, 会自动填充背景色
 void loc_printf( u32 x, u32 y ,const char *format ,...);
 //清空debug屏幕,并将printf坐标复位
