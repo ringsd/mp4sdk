@@ -189,3 +189,18 @@ int screen_set_backlight( int value )
 	return 0;
 }
 
+void sys_get_time( SYS_TIME * mtime )
+{
+    time_t atime;
+    struct tm *tblock;
+    
+    time( &atime );
+    tblock = localtime(&atime);
+    
+    mtime->year = tblock->tm_year + 1900;
+    mtime->month = tblock->tm_mon;
+    mtime->day = tblock->tm_mday;
+    mtime->hour = tblock->tm_hour;
+    mtime->minute = tblock->tm_min;
+    mtime->second = tblock->tm_sec;
+}
