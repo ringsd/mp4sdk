@@ -33,7 +33,7 @@
  * SUCH DAMAGE.
  */
 #include <wchar.h>
-#include "locale/runetype.h"
+//#include "locale/runetype.h"
 
 /*
  * Compare strings.
@@ -46,5 +46,5 @@ wcscmp(const wchar_t *s1, const wchar_t *s2)
 		if (*s1++ == 0)
 			return (0);
 	/* XXX assumes wchar_t = int */
-	return (*(const rune_t *)s1 - *(const rune_t *)--s2);
+	return (*(const wchar_t *)s1 - *(const wchar_t *)--s2);
 }
